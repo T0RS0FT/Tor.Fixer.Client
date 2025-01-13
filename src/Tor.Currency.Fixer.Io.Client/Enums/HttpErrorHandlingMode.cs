@@ -2,7 +2,7 @@
 {
     public enum HttpErrorHandlingMode
     {
-        ThrowException = 0,
-        ReturnError = 1,
+        ThrowsException = 0,
+        ReturnsError = 1,
     }
 }

@@ -10,7 +10,7 @@ namespace Tor.Currency.Fixer.Io.Client.DependencyInjection
 
             services.AddHttpClient<FixerClient>(options =>
             {
-                options.BaseAddress = new Uri("http://data.fixer.io/api/");
+                options.BaseAddress = new Uri(Constants.DefaultFixerUrl);
             });
 
             services.Configure(fixerOptions);

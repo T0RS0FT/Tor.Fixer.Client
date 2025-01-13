@@ -10,24 +10,9 @@ namespace Tor.Currency.Fixer.Io.Client
     {
         public async Task<FixerResponse<List<Symbol>>> GetSymbolsAsync()
         {
-            var httpResponse = await httpClient.GetAsync($"symbols?access_key={this.GetApiKey()}");
-
-            var fixerResponse = GetFixerResponse<List<Symbol>>(httpResponse, options.Value);
-
-            if (!fixerResponse.Success)
-            {
-                return fixerResponse;
-            }
-
-            var content = await httpResponse.Content.ReadFromJsonAsync<SymbolsModel>();
-
-            fixerResponse.Success = content.Success;
-            fixerResponse.Error = content.Error.ToFixerError();
-            fixerResponse.Data = content.Symbols
-                .Select(x => new Symbol() { Code = x.Key, Name = x.Value })
-                .ToList();
-
-            return fixerResponse;
+            return await this.GetFixerResponse<SymbolsModel, List<Symbol>>(
+                $"symbols?access_key={this.GetApiKey()}",
+                x => x.Symbols.Select(x => new Symbol() { Code = x.Key, Name = x.Value }).ToList());
         }
 
         private string GetApiKey()
@@ -39,17 +24,27 @@ namespace Tor.Currency.Fixer.Io.Client
                 : throw new Exception("API key required");
         }
 
-        private static FixerResponse<T> GetFixerResponse<T>(HttpResponseMessage httpResponse, FixerOptions options)
+        private async Task<FixerResponse<TResponseModel>> GetFixerResponse<TFixerModel, TResponseModel>(
+            string url,
+            Func<TFixerModel, TResponseModel> mapper)
+            where TFixerModel : FixerModelBase
         {
-            switch (options.HttpErrorHandlingMode)
+            if (!string.IsNullOrWhiteSpace(options.Value.BaseUrl))
             {
-                case HttpErrorHandlingMode.ThrowException:
+                httpClient.BaseAddress = new Uri(options.Value.BaseUrl);
+            }
+
+            var httpResponse = await httpClient.GetAsync(url);
+
+            switch (options.Value.HttpErrorHandlingMode)
+            {
+                case HttpErrorHandlingMode.ThrowsException:
                     httpResponse.EnsureSuccessStatusCode();
                     break;
-                case HttpErrorHandlingMode.ReturnError:
+                case HttpErrorHandlingMode.ReturnsError:
                     if (!httpResponse.IsSuccessStatusCode)
                     {
-                        return new FixerResponse<T>()
+                        return new FixerResponse<TResponseModel>()
                         {
                             Success = false,
                             Error = new FixerError()
@@ -62,7 +57,14 @@ namespace Tor.Currency.Fixer.Io.Client
                     break;
             }
 
-            return new FixerResponse<T>();
+            var content = await httpResponse.Content.ReadFromJsonAsync<TFixerModel>();
+
+            return new FixerResponse<TResponseModel>()
+            {
+                Success = content.Success,
+                Error = content.Error?.ToFixerError(),
+                Data = content.Success ? mapper.Invoke(content) : default
+            };
         }
     }
 }

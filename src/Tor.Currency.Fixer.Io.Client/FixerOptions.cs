@@ -4,13 +4,13 @@ namespace Tor.Currency.Fixer.Io.Client
 {
     public class FixerOptions
     {
-        public string BaseUrl { get; set; } = "https://data.fixer.io/api/";
+        public string BaseUrl { get; set; }
 
         public string ApiKey { get; private set; }
 
         public Func<string> ApiKeyFactory { get; private set; }
 
-        public HttpErrorHandlingMode HttpErrorHandlingMode { get; private set; } = HttpErrorHandlingMode.ReturnError;
+        public HttpErrorHandlingMode HttpErrorHandlingMode { get; private set; } = HttpErrorHandlingMode.ReturnsError;
 
         public FixerOptions WithBaseUrl(string baseUrl)
         {
