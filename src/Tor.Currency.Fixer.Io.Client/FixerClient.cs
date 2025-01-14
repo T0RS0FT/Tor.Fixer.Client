@@ -52,6 +52,8 @@ namespace Tor.Currency.Fixer.Io.Client
 
             var content = await httpResponse.Content.ReadFromJsonAsync<TFixerModel>();
 
+            Console.WriteLine(content.Error);
+
             return new FixerResponse<TResponseModel>()
             {
                 Success = content.Success,

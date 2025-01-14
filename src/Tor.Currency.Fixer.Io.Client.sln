@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tor.Currency.Fixer.Io.Client", "Tor.Currency.Fixer.Io.Client\Tor.Currency.Fixer.Io.Client.csproj", "{C599A6E6-3AEA-416C-915D-5B1867BB1077}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tor.Currency.Fixer.Io.Client.BlazorDemo", "Tor.Currency.Fixer.Io.Client.BlazorDemo\Tor.Currency.Fixer.Io.Client.BlazorDemo.csproj", "{15468B01-5DDF-4D45-BD5A-2F6BC706152C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C599A6E6-3AEA-416C-915D-5B1867BB1077}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C599A6E6-3AEA-416C-915D-5B1867BB1077}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C599A6E6-3AEA-416C-915D-5B1867BB1077}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15468B01-5DDF-4D45-BD5A-2F6BC706152C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15468B01-5DDF-4D45-BD5A-2F6BC706152C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15468B01-5DDF-4D45-BD5A-2F6BC706152C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15468B01-5DDF-4D45-BD5A-2F6BC706152C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

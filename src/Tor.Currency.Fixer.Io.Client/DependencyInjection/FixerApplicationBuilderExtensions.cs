@@ -8,7 +8,7 @@ namespace Tor.Currency.Fixer.Io.Client.DependencyInjection
         {
             services.AddScoped<IFixerClient, FixerClient>();
 
-            services.AddHttpClient<FixerClient>(options =>
+            services.AddHttpClient<IFixerClient, FixerClient>(options =>
             {
                 options.BaseAddress = new Uri(Constants.DefaultFixerUrl);
             });

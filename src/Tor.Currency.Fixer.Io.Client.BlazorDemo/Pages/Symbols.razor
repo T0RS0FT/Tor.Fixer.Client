@@ -1,0 +1,31 @@
+﻿@page "/symbols"
+
+<h1>Symbols</h1>
+
+<button type="button" class="btn btn-primary" @onclick="LoadSymbols">Load symbols</button>
+
+@if (hasSymbols)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var symbol in symbols)
+            {
+                <tr>
+                    <td>@symbol.Code</td>
+                    <td>@symbol.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (hasError)
+{
+    <div class="alert alert-danger" role="alert">@error</div>
+}
