@@ -11,21 +11,14 @@ namespace Tor.Currency.Fixer.Io.Client
         public async Task<FixerResponse<List<Symbol>>> GetSymbolsAsync()
         {
             return await this.GetFixerResponse<SymbolsModel, List<Symbol>>(
-                $"symbols?access_key={this.GetApiKey()}",
+                "symbols",
+                [],
                 x => x.Symbols.Select(x => new Symbol() { Code = x.Key, Name = x.Value }).ToList());
-        }
-
-        private string GetApiKey()
-        {
-            var apiKey = options.Value.ApiKeyFactory?.Invoke() ?? options.Value.ApiKey;
-
-            return !string.IsNullOrWhiteSpace(apiKey)
-                ? apiKey
-                : throw new Exception("API key required");
         }
 
         private async Task<FixerResponse<TResponseModel>> GetFixerResponse<TFixerModel, TResponseModel>(
             string url,
+            Dictionary<string, string> queryParameters,
             Func<TFixerModel, TResponseModel> mapper)
             where TFixerModel : FixerModelBase
         {
@@ -34,7 +27,7 @@ namespace Tor.Currency.Fixer.Io.Client
                 httpClient.BaseAddress = new Uri(options.Value.BaseUrl);
             }
 
-            var httpResponse = await httpClient.GetAsync(url);
+            var httpResponse = await httpClient.GetAsync(this.GetUrl(url, queryParameters));
 
             switch (options.Value.HttpErrorHandlingMode)
             {
@@ -65,6 +58,28 @@ namespace Tor.Currency.Fixer.Io.Client
                 Error = content.Error?.ToFixerError(),
                 Data = content.Success ? mapper.Invoke(content) : default
             };
+        }
+
+        private string GetApiKey()
+        {
+            var apiKey = options.Value.ApiKeyFactory?.Invoke() ?? options.Value.ApiKey;
+
+            return !string.IsNullOrWhiteSpace(apiKey)
+                ? apiKey
+                : throw new Exception("API key required");
+        }
+
+        private string GetUrl(string url, Dictionary<string, string> queryParameters)
+        {
+            queryParameters ??= [];
+            if (!queryParameters.ContainsKey(Constants.ApiKeyQueryParamName))
+            {
+                queryParameters.Add(Constants.ApiKeyQueryParamName, this.GetApiKey());
+            }
+
+            return queryParameters == null || queryParameters.Count == 0
+                ? url
+                : $"{url}?{string.Join("&", queryParameters.Select(x => $"{x.Key}={x.Value}"))}";
         }
     }
 }
