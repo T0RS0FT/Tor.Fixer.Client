@@ -10,13 +10,33 @@ namespace Tor.Currency.Fixer.Io.Client
     {
         public async Task<FixerResponse<List<Symbol>>> GetSymbolsAsync()
         {
-            return await this.GetFixerResponse<SymbolsModel, List<Symbol>>(
+            return await this.GetFixerResponseAsync<SymbolsModel, List<Symbol>>(
                 "symbols",
                 [],
                 x => x.Symbols.Select(x => new Symbol() { Code = x.Key, Name = x.Value }).ToList());
         }
 
-        private async Task<FixerResponse<TResponseModel>> GetFixerResponse<TFixerModel, TResponseModel>(
+        public async Task<FixerResponse<LatestRates>> GetLatestRatesAsync(string baseCurrencyCode, params string[] symbols)
+        {
+            var queryParameters = new Dictionary<string, string>() { ["base"] = baseCurrencyCode };
+            if (symbols != null && symbols.Length > 0)
+            {
+                queryParameters.Add("symbols", string.Join(",", symbols));
+            }
+
+            return await this.GetFixerResponseAsync<LatestRatesModel, LatestRates>(
+                "latest",
+                queryParameters,
+                x => new LatestRates()
+                {
+                    BaseCurrencyCode = x.Base,
+                    Date = x.Date,
+                    Timestamp = x.TimeStamp,
+                    Rates = x.Rates.Select(rate => new CurrencyRate() { CurrencyCode = rate.Key, ExchangeRate = rate.Value }).ToList()
+                });
+        }
+
+        private async Task<FixerResponse<TResponseModel>> GetFixerResponseAsync<TFixerModel, TResponseModel>(
             string url,
             Dictionary<string, string> queryParameters,
             Func<TFixerModel, TResponseModel> mapper)

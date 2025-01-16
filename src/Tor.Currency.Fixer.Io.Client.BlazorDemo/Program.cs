@@ -14,7 +14,10 @@ namespace Tor.Currency.Fixer.Io.Client.BlazorDemo
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            builder.Services.AddFixer(options => options.WithApiKeyFactory(() => Constants.FixerApiKey));
+            builder.Services.AddFixer(options =>
+            {
+                options.WithApiKeyFactory(() => Constants.FixerApiKey);
+            });
 
             await builder.Build().RunAsync();
         }
