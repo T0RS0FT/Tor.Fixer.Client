@@ -1,0 +1,59 @@
+﻿@page "/latestrates"
+
+<h1>Latest rates</h1>
+
+<div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm">API Key</span>
+    </div>
+    <input type="text"
+           class="form-control"
+           aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           @bind="baseCurrencyCode"
+           placeholder="e.g., USD">
+</div>
+
+<div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm">API Key</span>
+    </div>
+    <input type="text"
+           class="form-control"
+           aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           @bind="destinationCurrencyCodes"
+           placeholder="e.g., EUR,GBP,USD">
+</div>
+
+<button type="button" class="btn btn-primary" @onclick="LoadData">Load</button>
+
+@if (hasData)
+{
+    <div>Base currency code: @latestRates.BaseCurrencyCode</div>
+    <div>Date: @latestRates.Date</div>
+    <div>TimeStamp: @latestRates.Timestamp</div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Currency code</th>
+                <th>Exchange rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rate in latestRates.Rates)
+            {
+                <tr>
+                    <td>@rate.CurrencyCode</td>
+                    <td>@rate.ExchangeRate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (hasError)
+{
+    <div class="alert alert-danger" role="alert">@error</div>
+}

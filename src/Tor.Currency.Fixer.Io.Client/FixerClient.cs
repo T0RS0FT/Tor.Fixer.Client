@@ -16,12 +16,18 @@ namespace Tor.Currency.Fixer.Io.Client
                 x => x.Symbols.Select(x => new Symbol() { Code = x.Key, Name = x.Value }).ToList());
         }
 
-        public async Task<FixerResponse<LatestRates>> GetLatestRatesAsync(string baseCurrencyCode, params string[] symbols)
+        public async Task<FixerResponse<LatestRates>> GetLatestRatesAsync(string baseCurrencyCode, string[] destinationCurrencyCodes)
         {
-            var queryParameters = new Dictionary<string, string>() { ["base"] = baseCurrencyCode };
-            if (symbols != null && symbols.Length > 0)
+            var queryParameters = new Dictionary<string, string>();
+
+            if (!string.IsNullOrWhiteSpace(baseCurrencyCode))
             {
-                queryParameters.Add("symbols", string.Join(",", symbols));
+                queryParameters.Add("base", baseCurrencyCode);
+            }
+
+            if (destinationCurrencyCodes != null && destinationCurrencyCodes.Length > 0)
+            {
+                queryParameters.Add("symbols", string.Join(",", destinationCurrencyCodes));
             }
 
             return await this.GetFixerResponseAsync<LatestRatesModel, LatestRates>(
