@@ -51,6 +51,42 @@ namespace Tor.Currency.Fixer.Io.Client
                 });
         }
 
+        public async Task<FixerResponse<HistoricalRates>> GetHistoricalRatesAsync(DateOnly date)
+            => await this.GetHistoricalRatesAsync(date, null, null);
+
+        public async Task<FixerResponse<HistoricalRates>> GetHistoricalRatesAsync(DateOnly date, string baseCurrencyCode)
+            => await this.GetHistoricalRatesAsync(date, baseCurrencyCode, null);
+
+        public async Task<FixerResponse<HistoricalRates>> GetHistoricalRatesAsync(DateOnly date, string[] destinationCurrencyCodes)
+            => await this.GetHistoricalRatesAsync(date, null, destinationCurrencyCodes);
+
+        public async Task<FixerResponse<HistoricalRates>> GetHistoricalRatesAsync(DateOnly date, string baseCurrencyCode, string[] destinationCurrencyCodes)
+        {
+            var queryParameters = new Dictionary<string, string>();
+
+            if (!string.IsNullOrWhiteSpace(baseCurrencyCode))
+            {
+                queryParameters.Add("base", baseCurrencyCode);
+            }
+
+            if (destinationCurrencyCodes != null && destinationCurrencyCodes.Length > 0)
+            {
+                queryParameters.Add("symbols", string.Join(",", destinationCurrencyCodes));
+            }
+
+            return await this.GetFixerResponseAsync<HistoricalRatesModel, HistoricalRates>(
+                $"{date.Year:0000}-{date.Month:00}-{date.Day:00}",
+                queryParameters,
+                x => new HistoricalRates()
+                {
+                    Historical = x.Historical,
+                    BaseCurrencyCode = x.Base,
+                    Date = x.Date,
+                    Timestamp = x.TimeStamp,
+                    Rates = x.Rates.Select(rate => new CurrencyRate() { CurrencyCode = rate.Key, ExchangeRate = rate.Value }).ToList()
+                });
+        }
+
         private async Task<FixerResponse<TResponseModel>> GetFixerResponseAsync<TFixerModel, TResponseModel>(
             string url,
             Dictionary<string, string> queryParameters,

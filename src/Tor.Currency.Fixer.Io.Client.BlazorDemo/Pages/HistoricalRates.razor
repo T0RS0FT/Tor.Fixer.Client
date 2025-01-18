@@ -1,6 +1,17 @@
-﻿@page "/latestrates"
+﻿@page "/historicalrates"
 
-<h1>Latest rates</h1>
+<h1>Historical rates</h1>
+
+<div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm">Date</span>
+    </div>
+    <input type="date"
+           class="form-control"
+           aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           @bind="date">
+</div>
 
 <div class="input-group input-group-sm mb-3">
     <div class="input-group-prepend">
@@ -30,9 +41,10 @@
 
 @if (hasData)
 {
-    <div>Base currency code: @latestRates.BaseCurrencyCode</div>
-    <div>Date: @latestRates.Date</div>
-    <div>TimeStamp: @latestRates.Timestamp</div>
+    <div>Historical: @historicalRates.Historical</div>
+    <div>Base currency code: @historicalRates.BaseCurrencyCode</div>
+    <div>Date: @historicalRates.Date</div>
+    <div>TimeStamp: @historicalRates.Timestamp</div>
 
     <table class="table">
         <thead>
@@ -42,7 +54,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var rate in latestRates.Rates)
+            @foreach (var rate in historicalRates.Rates)
             {
                 <tr>
                     <td>@rate.CurrencyCode</td>
