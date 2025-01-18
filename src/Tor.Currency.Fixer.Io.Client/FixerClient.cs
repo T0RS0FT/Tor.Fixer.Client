@@ -16,6 +16,15 @@ namespace Tor.Currency.Fixer.Io.Client
                 x => x.Symbols.Select(x => new Symbol() { Code = x.Key, Name = x.Value }).ToList());
         }
 
+        public async Task<FixerResponse<LatestRates>> GetLatestRatesAsync()
+            => await this.GetLatestRatesAsync(null, null);
+
+        public async Task<FixerResponse<LatestRates>> GetLatestRatesAsync(string baseCurrencyCode)
+            => await this.GetLatestRatesAsync(baseCurrencyCode, null);
+
+        public async Task<FixerResponse<LatestRates>> GetLatestRatesAsync(string[] destinationCurrencyCodes)
+            => await this.GetLatestRatesAsync(null, destinationCurrencyCodes);
+
         public async Task<FixerResponse<LatestRates>> GetLatestRatesAsync(string baseCurrencyCode, string[] destinationCurrencyCodes)
         {
             var queryParameters = new Dictionary<string, string>();
@@ -105,9 +114,7 @@ namespace Tor.Currency.Fixer.Io.Client
                 queryParameters.Add(Constants.ApiKeyQueryParamName, this.GetApiKey());
             }
 
-            return queryParameters == null || queryParameters.Count == 0
-                ? url
-                : $"{url}?{string.Join("&", queryParameters.Select(x => $"{x.Key}={x.Value}"))}";
+            return $"{url}?{string.Join("&", queryParameters.Select(x => $"{x.Key}={x.Value}"))}";
         }
     }
 }

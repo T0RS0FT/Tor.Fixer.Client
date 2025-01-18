@@ -6,6 +6,12 @@ namespace Tor.Currency.Fixer.Io.Client
     {
         Task<FixerResponse<List<Symbol>>> GetSymbolsAsync();
 
+        Task<FixerResponse<LatestRates>> GetLatestRatesAsync();
+
+        Task<FixerResponse<LatestRates>> GetLatestRatesAsync(string baseCurrencyCode);
+
+        Task<FixerResponse<LatestRates>> GetLatestRatesAsync(string[] destinationCurrencyCodes);
+
         Task<FixerResponse<LatestRates>> GetLatestRatesAsync(string baseCurrencyCode, string[] destinationCurrencyCodes);
     }
 }
