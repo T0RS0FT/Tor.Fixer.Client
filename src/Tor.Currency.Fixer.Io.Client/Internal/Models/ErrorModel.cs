@@ -1,7 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 using Tor.Currency.Fixer.Io.Client.Enums;
+using Tor.Currency.Fixer.Io.Client.Models;
 
-namespace Tor.Currency.Fixer.Io.Client.Models.Internal
+namespace Tor.Currency.Fixer.Io.Client.Internal.Models
 {
     internal class ErrorModel
     {
@@ -19,9 +20,9 @@ namespace Tor.Currency.Fixer.Io.Client.Models.Internal
             return new FixerError()
             {
                 ErrorType = ErrorType.Fixer,
-                Code = this.Code,
-                Type = this.Type,
-                Info = this.Info,
+                Code = Code,
+                Type = Type,
+                Info = Info,
             };
         }
     }

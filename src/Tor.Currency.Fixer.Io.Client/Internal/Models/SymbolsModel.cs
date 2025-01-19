@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Tor.Currency.Fixer.Io.Client.Models.Internal
+namespace Tor.Currency.Fixer.Io.Client.Internal.Models
 {
     internal class SymbolsModel : FixerModelBase
     {

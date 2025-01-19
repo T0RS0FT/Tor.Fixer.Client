@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Tor.Currency.Fixer.Io.Client.Internal;
 
 namespace Tor.Currency.Fixer.Io.Client.DependencyInjection
 {

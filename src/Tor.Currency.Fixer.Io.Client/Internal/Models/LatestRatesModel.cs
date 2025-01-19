@@ -1,12 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Tor.Currency.Fixer.Io.Client.Models.Internal
+namespace Tor.Currency.Fixer.Io.Client.Internal.Models
 {
-    internal class HistoricalRatesModel : FixerModelBase
+    internal class LatestRatesModel : FixerModelBase
     {
-        [JsonInclude]
-        internal bool Historical { get; set; }
-
         [JsonInclude]
         internal int TimeStamp { get; set; }
 

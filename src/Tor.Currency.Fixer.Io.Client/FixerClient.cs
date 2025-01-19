@@ -1,20 +1,16 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using Tor.Currency.Fixer.Io.Client.Enums;
+using Tor.Currency.Fixer.Io.Client.Internal;
+using Tor.Currency.Fixer.Io.Client.Internal.Models;
 using Tor.Currency.Fixer.Io.Client.Models;
-using Tor.Currency.Fixer.Io.Client.Models.Internal;
 
 namespace Tor.Currency.Fixer.Io.Client
 {
     public class FixerClient(HttpClient httpClient, IOptions<FixerOptions> options) : IFixerClient
     {
         public async Task<FixerResponse<List<Symbol>>> GetSymbolsAsync()
-        {
-            return await this.GetFixerResponseAsync<SymbolsModel, List<Symbol>>(
-                "symbols",
-                [],
-                x => x.Symbols.Select(x => new Symbol() { Code = x.Key, Name = x.Value }).ToList());
-        }
+            => await this.GetFixerResponseAsync("symbols", [], Mappers.Symbols);
 
         public async Task<FixerResponse<LatestRates>> GetLatestRatesAsync()
             => await this.GetLatestRatesAsync(null, null);
@@ -39,16 +35,7 @@ namespace Tor.Currency.Fixer.Io.Client
                 queryParameters.Add("symbols", string.Join(",", destinationCurrencyCodes));
             }
 
-            return await this.GetFixerResponseAsync<LatestRatesModel, LatestRates>(
-                "latest",
-                queryParameters,
-                x => new LatestRates()
-                {
-                    BaseCurrencyCode = x.Base,
-                    Date = x.Date,
-                    Timestamp = x.TimeStamp,
-                    Rates = x.Rates.Select(rate => new CurrencyRate() { CurrencyCode = rate.Key, ExchangeRate = rate.Value }).ToList()
-                });
+            return await this.GetFixerResponseAsync("latest", queryParameters, Mappers.LatestRates);
         }
 
         public async Task<FixerResponse<HistoricalRates>> GetHistoricalRatesAsync(DateOnly date)
@@ -74,17 +61,10 @@ namespace Tor.Currency.Fixer.Io.Client
                 queryParameters.Add("symbols", string.Join(",", destinationCurrencyCodes));
             }
 
-            return await this.GetFixerResponseAsync<HistoricalRatesModel, HistoricalRates>(
+            return await this.GetFixerResponseAsync(
                 $"{date.Year:0000}-{date.Month:00}-{date.Day:00}",
                 queryParameters,
-                x => new HistoricalRates()
-                {
-                    Historical = x.Historical,
-                    BaseCurrencyCode = x.Base,
-                    Date = x.Date,
-                    Timestamp = x.TimeStamp,
-                    Rates = x.Rates.Select(rate => new CurrencyRate() { CurrencyCode = rate.Key, ExchangeRate = rate.Value }).ToList()
-                });
+                Mappers.HistoricalRates);
         }
 
         private async Task<FixerResponse<TResponseModel>> GetFixerResponseAsync<TFixerModel, TResponseModel>(
