@@ -8,7 +8,7 @@ namespace Tor.Currency.Fixer.Io.Client.Internal.Models
         internal bool Historical { get; set; }
 
         [JsonInclude]
-        internal int TimeStamp { get; set; }
+        internal int Timestamp { get; set; }
 
         [JsonInclude]
         internal string Base { get; set; }
