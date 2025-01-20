@@ -1,6 +1,8 @@
-﻿namespace Tor.Currency.Fixer.Io.Client.Models
+﻿using Tor.Currency.Fixer.Io.Client.Interfaces;
+
+namespace Tor.Currency.Fixer.Io.Client.Models
 {
-    public class HistoricalRates
+    public class HistoricalRates : IRates
     {
         public bool Historical { get; set; }
 

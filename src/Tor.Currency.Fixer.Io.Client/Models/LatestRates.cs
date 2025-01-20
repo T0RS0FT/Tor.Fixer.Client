@@ -1,6 +1,8 @@
-﻿namespace Tor.Currency.Fixer.Io.Client.Models
+﻿using Tor.Currency.Fixer.Io.Client.Interfaces;
+
+namespace Tor.Currency.Fixer.Io.Client.Models
 {
-    public class LatestRates
+    public class LatestRates : IRates
     {
         public string BaseCurrencyCode { get; set; }
 
