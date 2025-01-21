@@ -48,7 +48,6 @@ namespace Tor.Currency.Fixer.Io.Client.Extensions
                     : destinationRate.ExchangeRate / sourceRate.ExchangeRate * quantity;
         }
 
-        // TODO unit tests
         public static LatestRates ChangeBaseCurrency(this LatestRates rates, string baseCurrencyCode)
         {
             ArgumentNullException.ThrowIfNull(rates);
@@ -63,7 +62,6 @@ namespace Tor.Currency.Fixer.Io.Client.Extensions
             };
         }
 
-        // TODO unit tests
         public static HistoricalRates ChangeBaseCurrency(this HistoricalRates rates, string baseCurrencyCode)
         {
             ArgumentNullException.ThrowIfNull(rates);
@@ -103,7 +101,7 @@ namespace Tor.Currency.Fixer.Io.Client.Extensions
                     : new CurrencyRate()
                     {
                         CurrencyCode = x.CurrencyCode,
-                        ExchangeRate = baseRate.ExchangeRate / x.ExchangeRate
+                        ExchangeRate = x.ExchangeRate / baseRate.ExchangeRate
                     })
                 .OrderBy(x => x.CurrencyCode)];
         }

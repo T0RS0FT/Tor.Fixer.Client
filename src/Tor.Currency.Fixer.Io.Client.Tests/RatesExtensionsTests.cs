@@ -61,5 +61,57 @@ namespace Tor.Currency.Fixer.Io.Client.Tests
                 }
             }
         }
+
+        [TestMethod]
+        public void LatestRatesExtensionsChangeBaseCurrencyTest()
+        {
+            var rates = new LatestRates()
+            {
+                BaseCurrencyCode = "EUR",
+                Date = DateTime.Now.Date,
+                Timestamp = (int)DateTime.Now.Date.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
+                Rates =
+                [
+                    new CurrencyRate(){ CurrencyCode="USD", ExchangeRate=(decimal)1.04 },
+                    new CurrencyRate(){ CurrencyCode="GBP", ExchangeRate=(decimal)0.85 }
+                ]
+            };
+
+            var newRates = rates.ChangeBaseCurrency("USD");
+
+            Assert.AreEqual("USD", newRates.BaseCurrencyCode);
+            Assert.AreEqual(rates.Date, newRates.Date);
+            Assert.AreEqual(rates.Timestamp, newRates.Timestamp);
+            Assert.AreEqual(rates.Rates.Count, newRates.Rates.Count);
+            Assert.IsTrue(Math.Abs(newRates.Rates.Single(x => x.CurrencyCode == "EUR").ExchangeRate - 0.96m) < 0.01m);
+            Assert.IsTrue(Math.Abs(newRates.Rates.Single(x => x.CurrencyCode == "GBP").ExchangeRate - 0.81m) < 0.01m);
+        }
+
+        [TestMethod]
+        public void HistoricalRatesExtensionsChangeBaseCurrencyTest()
+        {
+            var rates = new HistoricalRates()
+            {
+                Historical = true,
+                BaseCurrencyCode = "EUR",
+                Date = DateTime.Now.Date,
+                Timestamp = (int)DateTime.Now.Date.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
+                Rates =
+                [
+                    new CurrencyRate(){ CurrencyCode="USD", ExchangeRate=(decimal)1.04 },
+                    new CurrencyRate(){ CurrencyCode="GBP", ExchangeRate=(decimal)0.85 }
+                ]
+            };
+
+            var newRates = rates.ChangeBaseCurrency("USD");
+
+            Assert.AreEqual("USD", newRates.BaseCurrencyCode);
+            Assert.AreEqual(rates.Historical, newRates.Historical);
+            Assert.AreEqual(rates.Date, newRates.Date);
+            Assert.AreEqual(rates.Timestamp, newRates.Timestamp);
+            Assert.AreEqual(rates.Rates.Count, newRates.Rates.Count);
+            Assert.IsTrue(Math.Abs(newRates.Rates.Single(x => x.CurrencyCode == "EUR").ExchangeRate - 0.96m) < 0.01m);
+            Assert.IsTrue(Math.Abs(newRates.Rates.Single(x => x.CurrencyCode == "GBP").ExchangeRate - 0.81m) < 0.01m);
+        }
     }
 }
