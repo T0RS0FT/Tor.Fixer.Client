@@ -1,0 +1,19 @@
+﻿using System.Text.Json.Serialization;
+
+namespace Tor.Fixer.Client.Internal.Models
+{
+    internal class LatestRatesModel : FixerModelBase
+    {
+        [JsonInclude]
+        internal int Timestamp { get; set; }
+
+        [JsonInclude]
+        internal string Base { get; set; }
+
+        [JsonInclude]
+        internal DateTime Date { get; set; }
+
+        [JsonInclude]
+        internal Dictionary<string, decimal> Rates { get; set; }
+    }
+}
