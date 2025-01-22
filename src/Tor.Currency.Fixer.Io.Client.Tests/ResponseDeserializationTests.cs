@@ -67,5 +67,22 @@ namespace Tor.Currency.Fixer.Io.Client.Tests
             Assert.IsTrue(result.Rates.All(x => x.ExchangeRate > 0));
             Assert.IsTrue(result.Rates.GroupBy(x => x.CurrencyCode).All(x => x.Count() == 1));
         }
+
+        [TestMethod]
+        public void ErrorDeserializeTest()
+        {
+            var json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "json", "error.json"));
+
+            var model = JsonSerializer.Deserialize<HistoricalRatesModel>(json, jsonSerializerOptions);
+
+            var error = model.Error?.ToFixerError();
+
+            Assert.IsNotNull(model);
+            Assert.IsFalse(model.Success);
+            Assert.IsNotNull(error);
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(error.Info));
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(error.Type));
+            Assert.IsTrue(error.Code > 0);
+        }
     }
 }

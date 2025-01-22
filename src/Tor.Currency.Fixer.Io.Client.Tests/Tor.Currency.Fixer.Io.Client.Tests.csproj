@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -9,12 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Json\error.json" />
     <None Remove="Json\historical.json" />
     <None Remove="Json\latest.json" />
     <None Remove="Json\symbols.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Json\error.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Json\historical.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
