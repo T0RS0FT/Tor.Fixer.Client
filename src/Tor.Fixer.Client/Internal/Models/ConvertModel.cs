@@ -1,10 +1,12 @@
 ﻿using System.Text.Json.Serialization;
+using Tor.Fixer.Client.Json;
 
 namespace Tor.Fixer.Client.Internal.Models
 {
     internal class ConvertModel : FixerModelBase
     {
         [JsonInclude]
+        [JsonConverter(typeof(SafeBoolConverter))]
         internal bool Historical { get; set; }
 
         [JsonInclude]

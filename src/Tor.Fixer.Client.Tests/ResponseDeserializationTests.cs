@@ -84,5 +84,27 @@ namespace Tor.Fixer.Client.Tests
             Assert.IsTrue(!string.IsNullOrWhiteSpace(error.Type));
             Assert.IsTrue(error.Code > 0);
         }
+
+        [TestMethod]
+        public void ConvertDeserializeTest()
+        {
+            var json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "json", "convert.json"));
+
+            var model = JsonSerializer.Deserialize<ConvertModel>(json, jsonSerializerOptions);
+
+            var result = Mappers.Convert.Invoke(model);
+
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.Historical);
+            Assert.IsTrue(result.Result > 0);
+            Assert.IsTrue(result.Date > DateTime.MinValue);
+            Assert.IsNotNull(result.Query);
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(result.Query.SourceCurrencyCode));
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(result.Query.DestinationCurrencyCode));
+            Assert.IsTrue(result.Query.Amount > 0);
+            Assert.IsNotNull(result.Info);
+            Assert.IsTrue(result.Info.Timestamp > 0);
+            Assert.IsTrue(result.Info.Rate > 0);
+        }
     }
 }
