@@ -37,13 +37,13 @@ namespace Tor.Currency.Fixer.Io.Client.Tests
             bool success,
             double expectedResult)
         {
-            var rates = new LatestRates()
+            var rates = new LatestRatesResult()
             {
                 BaseCurrencyCode = "EUR",
                 Rates =
                 [
-                    new CurrencyRate(){ CurrencyCode="USD", ExchangeRate=(decimal)1.04 },
-                    new CurrencyRate(){ CurrencyCode="GBP", ExchangeRate=(decimal)0.85 }
+                    new CurrencyRateResult(){ CurrencyCode="USD", ExchangeRate=(decimal)1.04 },
+                    new CurrencyRateResult(){ CurrencyCode="GBP", ExchangeRate=(decimal)0.85 }
                 ]
             };
 
@@ -65,15 +65,15 @@ namespace Tor.Currency.Fixer.Io.Client.Tests
         [TestMethod]
         public void LatestRatesExtensionsChangeBaseCurrencyTest()
         {
-            var rates = new LatestRates()
+            var rates = new LatestRatesResult()
             {
                 BaseCurrencyCode = "EUR",
                 Date = DateTime.Now.Date,
                 Timestamp = (int)DateTime.Now.Date.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
                 Rates =
                 [
-                    new CurrencyRate(){ CurrencyCode="USD", ExchangeRate=(decimal)1.04 },
-                    new CurrencyRate(){ CurrencyCode="GBP", ExchangeRate=(decimal)0.85 }
+                    new CurrencyRateResult(){ CurrencyCode="USD", ExchangeRate=(decimal)1.04 },
+                    new CurrencyRateResult(){ CurrencyCode="GBP", ExchangeRate=(decimal)0.85 }
                 ]
             };
 
@@ -90,7 +90,7 @@ namespace Tor.Currency.Fixer.Io.Client.Tests
         [TestMethod]
         public void HistoricalRatesExtensionsChangeBaseCurrencyTest()
         {
-            var rates = new HistoricalRates()
+            var rates = new HistoricalRatesResult()
             {
                 Historical = true,
                 BaseCurrencyCode = "EUR",
@@ -98,8 +98,8 @@ namespace Tor.Currency.Fixer.Io.Client.Tests
                 Timestamp = (int)DateTime.Now.Date.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
                 Rates =
                 [
-                    new CurrencyRate(){ CurrencyCode="USD", ExchangeRate=(decimal)1.04 },
-                    new CurrencyRate(){ CurrencyCode="GBP", ExchangeRate=(decimal)0.85 }
+                    new CurrencyRateResult(){ CurrencyCode="USD", ExchangeRate=(decimal)1.04 },
+                    new CurrencyRateResult(){ CurrencyCode="GBP", ExchangeRate=(decimal)0.85 }
                 ]
             };
 

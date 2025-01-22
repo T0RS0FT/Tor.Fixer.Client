@@ -1,10 +1,10 @@
 ﻿namespace Tor.Currency.Fixer.Io.Client.Models
 {
-    public class FixerResponse<T>
+    public class FixerResponse<TResult>
     {
         public bool Success { get; set; }
 
-        public T Data { get; set; }
+        public TResult Result { get; set; }
 
         public FixerError Error { get; set; }
     }

@@ -4,22 +4,26 @@ namespace Tor.Currency.Fixer.Io.Client
 {
     public interface IFixerClient
     {
-        Task<FixerResponse<List<Symbol>>> GetSymbolsAsync();
+        Task<FixerResponse<List<SymbolResult>>> GetSymbolsAsync();
 
-        Task<FixerResponse<LatestRates>> GetLatestRatesAsync();
+        Task<FixerResponse<LatestRatesResult>> GetLatestRatesAsync();
 
-        Task<FixerResponse<LatestRates>> GetLatestRatesAsync(string baseCurrencyCode);
+        Task<FixerResponse<LatestRatesResult>> GetLatestRatesAsync(string baseCurrencyCode);
 
-        Task<FixerResponse<LatestRates>> GetLatestRatesAsync(string[] destinationCurrencyCodes);
+        Task<FixerResponse<LatestRatesResult>> GetLatestRatesAsync(string[] destinationCurrencyCodes);
 
-        Task<FixerResponse<LatestRates>> GetLatestRatesAsync(string baseCurrencyCode, string[] destinationCurrencyCodes);
+        Task<FixerResponse<LatestRatesResult>> GetLatestRatesAsync(string baseCurrencyCode, string[] destinationCurrencyCodes);
 
-        Task<FixerResponse<HistoricalRates>> GetHistoricalRatesAsync(DateOnly date);
+        Task<FixerResponse<HistoricalRatesResult>> GetHistoricalRatesAsync(DateOnly date);
 
-        Task<FixerResponse<HistoricalRates>> GetHistoricalRatesAsync(DateOnly date, string baseCurrencyCode);
+        Task<FixerResponse<HistoricalRatesResult>> GetHistoricalRatesAsync(DateOnly date, string baseCurrencyCode);
 
-        Task<FixerResponse<HistoricalRates>> GetHistoricalRatesAsync(DateOnly date, string[] destinationCurrencyCodes);
+        Task<FixerResponse<HistoricalRatesResult>> GetHistoricalRatesAsync(DateOnly date, string[] destinationCurrencyCodes);
 
-        Task<FixerResponse<HistoricalRates>> GetHistoricalRatesAsync(DateOnly date, string baseCurrencyCode, string[] destinationCurrencyCodes);
+        Task<FixerResponse<HistoricalRatesResult>> GetHistoricalRatesAsync(DateOnly date, string baseCurrencyCode, string[] destinationCurrencyCodes);
+
+        Task<FixerResponse<ConvertResult>> ConvertAsync(string sourceCurrencyCode, string destinationCurrencyCode, decimal amount);
+
+        Task<FixerResponse<ConvertResult>> ConvertAsync(string sourceCurrencyCode, string destinationCurrencyCode, decimal amount, DateTime? date);
     }
 }

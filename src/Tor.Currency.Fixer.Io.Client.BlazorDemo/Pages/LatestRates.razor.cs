@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Tor.Currency.Fixer.Io.Client.BlazorDemo.Extensions;
+using Tor.Currency.Fixer.Io.Client.Models;
 
 namespace Tor.Currency.Fixer.Io.Client.BlazorDemo.Pages
 {
@@ -11,7 +12,7 @@ namespace Tor.Currency.Fixer.Io.Client.BlazorDemo.Pages
         private string baseCurrencyCode = string.Empty;
         private string destinationCurrencyCodes = string.Empty;
 
-        private Models.LatestRates latestRates;
+        private LatestRatesResult latestRates;
         private string error = string.Empty;
         private bool hasError = false;
         private bool hasData = false;
@@ -36,7 +37,7 @@ namespace Tor.Currency.Fixer.Io.Client.BlazorDemo.Pages
 
             var response = await this.FixerClient.GetLatestRatesAsync(this.baseCurrencyCode, destinationCodes);
 
-            this.latestRates = response.Data;
+            this.latestRates = response.Result;
             this.hasData = this.latestRates != null;
             this.error = response.Success ? string.Empty : response.Error.ToMessage();
             this.hasError = !string.IsNullOrWhiteSpace(this.error);

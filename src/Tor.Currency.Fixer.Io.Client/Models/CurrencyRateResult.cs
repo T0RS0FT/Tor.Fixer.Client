@@ -1,6 +1,6 @@
 ﻿namespace Tor.Currency.Fixer.Io.Client.Models
 {
-    public class CurrencyRate
+    public class CurrencyRateResult
     {
         public string CurrencyCode { get; set; }
 

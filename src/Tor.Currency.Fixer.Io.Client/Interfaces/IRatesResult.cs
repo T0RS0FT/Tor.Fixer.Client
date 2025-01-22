@@ -2,10 +2,10 @@
 
 namespace Tor.Currency.Fixer.Io.Client.Interfaces
 {
-    public interface IRates
+    public interface IRatesResult
     {
         public string BaseCurrencyCode { get; set; }
 
-        public List<CurrencyRate> Rates { get; set; }
+        public List<CurrencyRateResult> Rates { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace Tor.Currency.Fixer.Io.Client.Extensions
     public static class RatesExtensions
     {
         public static decimal Convert(
-            this IRates rates,
+            this IRatesResult rates,
             string sourceCurrencyCode,
             string destinationCurrencyCode,
             decimal quantity)
@@ -48,12 +48,12 @@ namespace Tor.Currency.Fixer.Io.Client.Extensions
                     : destinationRate.ExchangeRate / sourceRate.ExchangeRate * quantity;
         }
 
-        public static LatestRates ChangeBaseCurrency(this LatestRates rates, string baseCurrencyCode)
+        public static LatestRatesResult ChangeBaseCurrency(this LatestRatesResult rates, string baseCurrencyCode)
         {
             ArgumentNullException.ThrowIfNull(rates);
             ArgumentNullException.ThrowIfNullOrWhiteSpace(baseCurrencyCode);
 
-            return new LatestRates()
+            return new LatestRatesResult()
             {
                 Date = rates.Date,
                 BaseCurrencyCode = baseCurrencyCode.ToUpper(),
@@ -62,12 +62,12 @@ namespace Tor.Currency.Fixer.Io.Client.Extensions
             };
         }
 
-        public static HistoricalRates ChangeBaseCurrency(this HistoricalRates rates, string baseCurrencyCode)
+        public static HistoricalRatesResult ChangeBaseCurrency(this HistoricalRatesResult rates, string baseCurrencyCode)
         {
             ArgumentNullException.ThrowIfNull(rates);
             ArgumentNullException.ThrowIfNullOrWhiteSpace(baseCurrencyCode);
 
-            return new HistoricalRates()
+            return new HistoricalRatesResult()
             {
                 Date = rates.Date,
                 BaseCurrencyCode = baseCurrencyCode.ToUpper(),
@@ -77,11 +77,11 @@ namespace Tor.Currency.Fixer.Io.Client.Extensions
             };
         }
 
-        private static List<CurrencyRate> RecalculateRates(IRates rates, string baseCurrencyCode)
+        private static List<CurrencyRateResult> RecalculateRates(IRatesResult rates, string baseCurrencyCode)
         {
             if (rates.BaseCurrencyCode.Equals(baseCurrencyCode, StringComparison.InvariantCultureIgnoreCase))
             {
-                return rates.Rates.Select(x => new CurrencyRate()
+                return rates.Rates.Select(x => new CurrencyRateResult()
                 {
                     CurrencyCode = x.CurrencyCode,
                     ExchangeRate = x.ExchangeRate
@@ -93,12 +93,12 @@ namespace Tor.Currency.Fixer.Io.Client.Extensions
 
             return [.. rates.Rates
                 .Select(x => x.CurrencyCode.Equals(baseCurrencyCode, StringComparison.InvariantCultureIgnoreCase)
-                    ? new CurrencyRate()
+                    ? new CurrencyRateResult()
                     {
                         CurrencyCode = rates.BaseCurrencyCode,
                         ExchangeRate = 1 / x.ExchangeRate
                     }
-                    : new CurrencyRate()
+                    : new CurrencyRateResult()
                     {
                         CurrencyCode = x.CurrencyCode,
                         ExchangeRate = x.ExchangeRate / baseRate.ExchangeRate
