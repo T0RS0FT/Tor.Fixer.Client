@@ -41,10 +41,12 @@
 
 @if (hasData)
 {
-    <div>Historical: @historicalRates.Historical</div>
-    <div>Base currency code: @historicalRates.BaseCurrencyCode</div>
-    <div>Date: @historicalRates.Date</div>
-    <div>TimeStamp: @historicalRates.Timestamp</div>
+    <ul>
+        <li>Historical: @historicalRates.Historical</li>
+        <li>Base: @historicalRates.BaseCurrencyCode</li>
+        <li>Date: @historicalRates.Date</li>
+        <li>Timestamp: @historicalRates.Timestamp</li>
+    </ul>
 
     <table class="table">
         <thead>

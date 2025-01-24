@@ -1,0 +1,76 @@
+﻿@page "/convert"
+
+<h1>Convert</h1>
+
+<div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm">Source currency code</span>
+    </div>
+    <input type="text"
+           class="form-control"
+           aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           @bind="sourceCurrencyCode"
+           placeholder="e.g., USD">
+</div>
+
+<div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm">Destination currency code</span>
+    </div>
+    <input type="text"
+           class="form-control"
+           aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           @bind="destinationCurrencyCode"
+           placeholder="e.g., USD">
+</div>
+
+<div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm">Amount</span>
+    </div>
+    <input type="number"
+           class="form-control"
+           aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           @bind="amount"
+           placeholder="e.g., 1">
+</div>
+
+<div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm">Date</span>
+    </div>
+    <input type="date"
+           class="form-control"
+           aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           @bind="date">
+</div>
+
+<button type="button" class="btn btn-primary" @onclick="LoadData">Load</button>
+
+@if (hasData)
+{
+    <ul>
+        <li>Query
+            <ul>Source currency code: @convertResult.Query.SourceCurrencyCode</ul>
+            <ul>Destination currency code: @convertResult.Query.DestinationCurrencyCode</ul>
+            <ul>Amount: @convertResult.Query.Amount</ul>
+        </li>
+        <li>
+            Info
+            <ul>Timestamp: @convertResult.Info.Timestamp</ul>
+            <ul>Rate: @convertResult.Info.Rate</ul>
+        </li>
+        <li>Date: @convertResult.Date</li>
+        <li>Result: @convertResult.Result</li>
+        <li>Historical: @convertResult.Historical</li>
+    </ul>
+}
+
+@if (hasError)
+{
+    <div class="alert alert-danger" role="alert">@error</div>
+}

@@ -30,9 +30,11 @@
 
 @if (hasData)
 {
-    <div>Base currency code: @latestRates.BaseCurrencyCode</div>
-    <div>Date: @latestRates.Date</div>
-    <div>TimeStamp: @latestRates.Timestamp</div>
+    <ul>
+        <li>Base: @latestRates.BaseCurrencyCode</li>
+        <li>Date: @latestRates.Date</li>
+        <li>Timestamp: @latestRates.Timestamp</li>
+    </ul>
 
     <table class="table">
         <thead>
