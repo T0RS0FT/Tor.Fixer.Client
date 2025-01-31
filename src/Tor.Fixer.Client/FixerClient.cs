@@ -62,7 +62,7 @@ namespace Tor.Fixer.Client
             }
 
             return await GetFixerResponseAsync(
-                $"{date.Year:0000}-{date.Month:00}-{date.Day:00}",
+                date.ToString("O"),
                 queryParameters,
                 Mappers.HistoricalRates);
         }
@@ -70,7 +70,7 @@ namespace Tor.Fixer.Client
         public async Task<FixerResponse<ConvertResult>> ConvertAsync(string sourceCurrencyCode, string destinationCurrencyCode, decimal amount)
             => await ConvertAsync(sourceCurrencyCode, destinationCurrencyCode, amount, null);
 
-        public async Task<FixerResponse<ConvertResult>> ConvertAsync(string sourceCurrencyCode, string destinationCurrencyCode, decimal amount, DateTime? date)
+        public async Task<FixerResponse<ConvertResult>> ConvertAsync(string sourceCurrencyCode, string destinationCurrencyCode, decimal amount, DateOnly? date)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(sourceCurrencyCode);
             ArgumentException.ThrowIfNullOrWhiteSpace(destinationCurrencyCode);
@@ -84,13 +84,46 @@ namespace Tor.Fixer.Client
 
             if (date != null)
             {
-                queryParameters.Add("date", $"{date.Value.Year:0000}-{date.Value.Month:00}-{date.Value.Day:00}");
+                queryParameters.Add("date", date.Value.ToString("O"));
             }
 
             return await GetFixerResponseAsync(
                 "convert",
                 queryParameters,
                 Mappers.Convert);
+        }
+
+        public async Task<FixerResponse<TimeSeriesResult>> GetTimeSeriesAsync(DateOnly startDate, DateOnly endDate)
+            => await GetTimeSeriesAsync(startDate, endDate, null, null);
+
+        public async Task<FixerResponse<TimeSeriesResult>> GetTimeSeriesAsync(DateOnly startDate, DateOnly endDate, string baseCurrencyCode)
+            => await GetTimeSeriesAsync(startDate, endDate, baseCurrencyCode, null);
+
+        public async Task<FixerResponse<TimeSeriesResult>> GetTimeSeriesAsync(DateOnly startDate, DateOnly endDate, string[] destinationCurrencyCodes)
+            => await GetTimeSeriesAsync(startDate, endDate, null, destinationCurrencyCodes);
+
+        public async Task<FixerResponse<TimeSeriesResult>> GetTimeSeriesAsync(DateOnly startDate, DateOnly endDate, string baseCurrencyCode, string[] destinationCurrencyCodes)
+        {
+            var queryParameters = new Dictionary<string, string>
+            {
+                { "start_date", startDate.ToString("O") },
+                { "end_date", endDate.ToString("O") },
+            };
+
+            if (!string.IsNullOrWhiteSpace(baseCurrencyCode))
+            {
+                queryParameters.Add("base", baseCurrencyCode);
+            }
+
+            if (destinationCurrencyCodes != null && destinationCurrencyCodes.Length > 0)
+            {
+                queryParameters.Add("symbols", string.Join(",", destinationCurrencyCodes));
+            }
+
+            return await GetFixerResponseAsync(
+                "timeseries",
+                queryParameters,
+                Mappers.TimeSeries);
         }
 
         private async Task<FixerResponse<TResponseModel>> GetFixerResponseAsync<TFixerModel, TResponseModel>(
@@ -127,9 +160,7 @@ namespace Tor.Fixer.Client
                     break;
             }
 
-            var content = await httpResponse.Content.ReadFromJsonAsync<TFixerModel>();
-
-            Console.WriteLine(content.Error);
+            var content = await httpResponse.Content.ReadFromJsonAsync<TFixerModel>(Constants.JsonSerializerOptions);
 
             return new FixerResponse<TResponseModel>()
             {

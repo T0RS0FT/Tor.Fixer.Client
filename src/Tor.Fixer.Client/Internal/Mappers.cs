@@ -61,5 +61,23 @@ namespace Tor.Fixer.Client.Internal
                         Rate = x.Info.Rate
                     }
             };
+
+        internal static readonly Func<TimeSeriesModel, TimeSeriesResult> TimeSeries = x =>
+            new TimeSeriesResult()
+            {
+                TimeSeries = x.Timeseries,
+                BaseCurrencyCode = x.Base,
+                StartDate = x.StartDate,
+                EndDate = x.EndDate,
+                Items = x.Rates?.Select(item => new TimeSeriesItemResult()
+                {
+                    Date = item.Key,
+                    Rates = item.Value?.Select(rate => new CurrencyRateResult()
+                    {
+                        CurrencyCode = rate.Key,
+                        ExchangeRate = rate.Value
+                    }).ToList() ?? []
+                }).ToList() ?? []
+            };
     }
 }

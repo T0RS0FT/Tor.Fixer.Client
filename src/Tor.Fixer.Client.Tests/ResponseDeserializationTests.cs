@@ -7,18 +7,12 @@ namespace Tor.Fixer.Client.Tests
     [TestClass]
     public class ResponseDeserializationTests
     {
-        private readonly JsonSerializerOptions jsonSerializerOptions = new()
-        {
-            IgnoreReadOnlyProperties = false,
-            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
-        };
-
         [TestMethod]
         public void SymbolsDeserializeTest()
         {
             var json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "json", "symbols.json"));
 
-            var model = JsonSerializer.Deserialize<SymbolsModel>(json, jsonSerializerOptions);
+            var model = JsonSerializer.Deserialize<SymbolsModel>(json, Constants.JsonSerializerOptions);
 
             var result = Mappers.Symbols.Invoke(model);
 
@@ -34,7 +28,7 @@ namespace Tor.Fixer.Client.Tests
         {
             var json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "json", "latest.json"));
 
-            var model = JsonSerializer.Deserialize<LatestRatesModel>(json, jsonSerializerOptions);
+            var model = JsonSerializer.Deserialize<LatestRatesModel>(json, Constants.JsonSerializerOptions);
 
             var result = Mappers.LatestRates.Invoke(model);
 
@@ -53,7 +47,7 @@ namespace Tor.Fixer.Client.Tests
         {
             var json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "json", "historical.json"));
 
-            var model = JsonSerializer.Deserialize<HistoricalRatesModel>(json, jsonSerializerOptions);
+            var model = JsonSerializer.Deserialize<HistoricalRatesModel>(json, Constants.JsonSerializerOptions);
 
             var result = Mappers.HistoricalRates.Invoke(model);
 
@@ -73,7 +67,7 @@ namespace Tor.Fixer.Client.Tests
         {
             var json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "json", "error.json"));
 
-            var model = JsonSerializer.Deserialize<HistoricalRatesModel>(json, jsonSerializerOptions);
+            var model = JsonSerializer.Deserialize<HistoricalRatesModel>(json, Constants.JsonSerializerOptions);
 
             var error = model.Error?.ToFixerError();
 
@@ -90,14 +84,14 @@ namespace Tor.Fixer.Client.Tests
         {
             var json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "json", "convert.json"));
 
-            var model = JsonSerializer.Deserialize<ConvertModel>(json, jsonSerializerOptions);
+            var model = JsonSerializer.Deserialize<ConvertModel>(json, Constants.JsonSerializerOptions);
 
             var result = Mappers.Convert.Invoke(model);
 
             Assert.IsNotNull(result);
             Assert.IsFalse(result.Historical);
             Assert.IsTrue(result.Result > 0);
-            Assert.IsTrue(result.Date > DateTime.MinValue);
+            Assert.IsTrue(result.Date > DateOnly.MinValue);
             Assert.IsNotNull(result.Query);
             Assert.IsTrue(!string.IsNullOrWhiteSpace(result.Query.SourceCurrencyCode));
             Assert.IsTrue(!string.IsNullOrWhiteSpace(result.Query.DestinationCurrencyCode));

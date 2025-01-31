@@ -12,7 +12,7 @@ namespace Tor.Fixer.Client.BlazorDemo.Pages
         private string sourceCurrencyCode = string.Empty;
         private string destinationCurrencyCode = string.Empty;
         private decimal amount = 1;
-        private DateTime? date = null;
+        private DateOnly? date = null;
 
         private ConvertResult convertResult;
         private string error = string.Empty;

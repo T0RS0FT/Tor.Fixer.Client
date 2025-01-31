@@ -68,7 +68,7 @@ namespace Tor.Fixer.Client.Tests
             var rates = new LatestRatesResult()
             {
                 BaseCurrencyCode = "EUR",
-                Date = DateTime.Now.Date,
+                Date = DateOnly.FromDateTime(DateTime.Now.Date),
                 Timestamp = (int)DateTime.Now.Date.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
                 Rates =
                 [
@@ -94,7 +94,7 @@ namespace Tor.Fixer.Client.Tests
             {
                 Historical = true,
                 BaseCurrencyCode = "EUR",
-                Date = DateTime.Now.Date,
+                Date = DateOnly.FromDateTime(DateTime.Now.Date),
                 Timestamp = (int)DateTime.Now.Date.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
                 Rates =
                 [
