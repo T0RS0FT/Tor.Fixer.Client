@@ -10,7 +10,7 @@ namespace Tor.Fixer.Client
     public class FixerClient(HttpClient httpClient, IOptions<FixerOptions> options) : IFixerClient
     {
         public async Task<FixerResponse<List<SymbolResult>>> GetSymbolsAsync()
-            => await GetFixerResponseAsync("symbols", [], Mappers.Symbols);
+            => await GetFixerResponseAsync(Constants.Endpoints.Symbols.UrlSegment, [], Mappers.Symbols);
 
         public async Task<FixerResponse<LatestRatesResult>> GetLatestRatesAsync()
             => await GetLatestRatesAsync(null, null);
@@ -27,15 +27,22 @@ namespace Tor.Fixer.Client
 
             if (!string.IsNullOrWhiteSpace(baseCurrencyCode))
             {
-                queryParameters.Add("base", baseCurrencyCode);
+                queryParameters.Add(
+                    Constants.Endpoints.LatestRates.Parameters.BaseCurrencyCode,
+                    baseCurrencyCode);
             }
 
             if (destinationCurrencyCodes != null && destinationCurrencyCodes.Length > 0)
             {
-                queryParameters.Add("symbols", string.Join(",", destinationCurrencyCodes));
+                queryParameters.Add(
+                    Constants.Endpoints.LatestRates.Parameters.Symbols,
+                    string.Join(",", destinationCurrencyCodes));
             }
 
-            return await GetFixerResponseAsync("latest", queryParameters, Mappers.LatestRates);
+            return await GetFixerResponseAsync(
+                Constants.Endpoints.LatestRates.UrlSegment,
+                queryParameters,
+                Mappers.LatestRates);
         }
 
         public async Task<FixerResponse<HistoricalRatesResult>> GetHistoricalRatesAsync(DateOnly date)
@@ -53,12 +60,16 @@ namespace Tor.Fixer.Client
 
             if (!string.IsNullOrWhiteSpace(baseCurrencyCode))
             {
-                queryParameters.Add("base", baseCurrencyCode);
+                queryParameters.Add(
+                    Constants.Endpoints.HistoricalRates.Parameters.BaseCurrencyCode,
+                    baseCurrencyCode);
             }
 
             if (destinationCurrencyCodes != null && destinationCurrencyCodes.Length > 0)
             {
-                queryParameters.Add("symbols", string.Join(",", destinationCurrencyCodes));
+                queryParameters.Add(
+                    Constants.Endpoints.HistoricalRates.Parameters.Symbols,
+                    string.Join(",", destinationCurrencyCodes));
             }
 
             return await GetFixerResponseAsync(
@@ -77,18 +88,18 @@ namespace Tor.Fixer.Client
 
             var queryParameters = new Dictionary<string, string>
             {
-                { "from", sourceCurrencyCode },
-                { "to", destinationCurrencyCode },
-                { "amount", amount.ToString("#.#") }
+                { Constants.Endpoints.Convert.Parameters.SourceCurrencyCode, sourceCurrencyCode },
+                { Constants.Endpoints.Convert.Parameters.DestinationCurrencyCode, destinationCurrencyCode },
+                { Constants.Endpoints.Convert.Parameters.Amount, amount.ToString("#.#") }
             };
 
             if (date != null)
             {
-                queryParameters.Add("date", date.Value.ToString("O"));
+                queryParameters.Add(Constants.Endpoints.Convert.Parameters.Date, date.Value.ToString("O"));
             }
 
             return await GetFixerResponseAsync(
-                "convert",
+                Constants.Endpoints.Convert.UrlSegment,
                 queryParameters,
                 Mappers.Convert);
         }
@@ -106,22 +117,26 @@ namespace Tor.Fixer.Client
         {
             var queryParameters = new Dictionary<string, string>
             {
-                { "start_date", startDate.ToString("O") },
-                { "end_date", endDate.ToString("O") },
+                { Constants.Endpoints.TimeSeries.Parameters.StartDate, startDate.ToString("O") },
+                { Constants.Endpoints.TimeSeries.Parameters.EndDate, endDate.ToString("O") },
             };
 
             if (!string.IsNullOrWhiteSpace(baseCurrencyCode))
             {
-                queryParameters.Add("base", baseCurrencyCode);
+                queryParameters.Add(
+                    Constants.Endpoints.TimeSeries.Parameters.BaseCurrencyCode,
+                    baseCurrencyCode);
             }
 
             if (destinationCurrencyCodes != null && destinationCurrencyCodes.Length > 0)
             {
-                queryParameters.Add("symbols", string.Join(",", destinationCurrencyCodes));
+                queryParameters.Add(
+                    Constants.Endpoints.TimeSeries.Parameters.Symbols,
+                    string.Join(",", destinationCurrencyCodes));
             }
 
             return await GetFixerResponseAsync(
-                "timeseries",
+                Constants.Endpoints.TimeSeries.UrlSegment,
                 queryParameters,
                 Mappers.TimeSeries);
         }
