@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="Tor.Fixer.Client.Tests" />
+    <InternalsVisibleTo Include="Tor.Fixer.Client.BlazorDemo" />
   </ItemGroup>
 
 </Project>

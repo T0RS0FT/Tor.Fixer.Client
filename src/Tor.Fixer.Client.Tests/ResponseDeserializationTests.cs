@@ -100,5 +100,32 @@ namespace Tor.Fixer.Client.Tests
             Assert.IsTrue(result.Info.Timestamp > 0);
             Assert.IsTrue(result.Info.Rate > 0);
         }
+
+        [TestMethod]
+        public void TimeSeriesDeserializeTest()
+        {
+            var json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "json", "timeseries.json"));
+
+            var model = JsonSerializer.Deserialize<TimeSeriesModel>(json, Constants.JsonSerializerOptions);
+
+            var result = Mappers.TimeSeries.Invoke(model);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.TimeSeries);
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(result.BaseCurrencyCode));
+            Assert.IsTrue(result.StartDate > DateOnly.MinValue);
+            Assert.IsTrue(result.EndDate > DateOnly.MinValue);
+            Assert.IsNotNull(result.Items);
+            Assert.IsTrue(result.Items.Count > 0);
+            result.Items.ForEach(item =>
+            {
+                Assert.IsTrue(item.Date > DateOnly.MinValue);
+                Assert.IsNotNull(item.Rates);
+                Assert.IsTrue(item.Rates.Count > 0);
+                Assert.IsTrue(item.Rates.All(x => !string.IsNullOrWhiteSpace(x.CurrencyCode)));
+                Assert.IsTrue(item.Rates.All(x => x.ExchangeRate > 0));
+                Assert.IsTrue(item.Rates.GroupBy(x => x.CurrencyCode).All(x => x.Count() == 1));
+            });
+        }
     }
 }
