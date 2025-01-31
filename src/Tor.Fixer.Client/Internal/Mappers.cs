@@ -79,5 +79,22 @@ namespace Tor.Fixer.Client.Internal
                     }).ToList() ?? []
                 }).ToList() ?? []
             };
+
+        internal static readonly Func<FluctuationModel, FluctuationResult> Fluctuation = x =>
+            new FluctuationResult()
+            {
+                Fluctuation = x.Fluctuation,
+                BaseCurrencyCode = x.Base,
+                StartDate = x.StartDate,
+                EndDate = x.EndDate,
+                Rates = x.Rates?.Select(rate => new FluctuationRateResult()
+                {
+                    CurrencyCode = rate.Key,
+                    StartRate = rate.Value.StartRate,
+                    EndRate = rate.Value.EndRate,
+                    Change = rate.Value.Change,
+                    ChangePercentage = rate.Value.ChangePct,
+                }).ToList() ?? []
+            };
     }
 }

@@ -33,5 +33,13 @@ namespace Tor.Fixer.Client
         Task<FixerResponse<TimeSeriesResult>> GetTimeSeriesAsync(DateOnly startDate, DateOnly endDate, string[] destinationCurrencyCodes);
 
         Task<FixerResponse<TimeSeriesResult>> GetTimeSeriesAsync(DateOnly startDate, DateOnly endDate, string baseCurrencyCode, string[] destinationCurrencyCodes);
+
+        Task<FixerResponse<FluctuationResult>> GetFluctuationAsync(DateOnly startDate, DateOnly endDate);
+
+        Task<FixerResponse<FluctuationResult>> GetFluctuationAsync(DateOnly startDate, DateOnly endDate, string baseCurrencyCode);
+
+        Task<FixerResponse<FluctuationResult>> GetFluctuationAsync(DateOnly startDate, DateOnly endDate, string[] destinationCurrencyCodes);
+
+        Task<FixerResponse<FluctuationResult>> GetFluctuationAsync(DateOnly startDate, DateOnly endDate, string baseCurrencyCode, string[] destinationCurrencyCodes);
     }
 }

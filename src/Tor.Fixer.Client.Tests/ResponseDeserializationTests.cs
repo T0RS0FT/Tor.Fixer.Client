@@ -127,5 +127,29 @@ namespace Tor.Fixer.Client.Tests
                 Assert.IsTrue(item.Rates.GroupBy(x => x.CurrencyCode).All(x => x.Count() == 1));
             });
         }
+
+        [TestMethod]
+        public void FluctuationDeserializeTest()
+        {
+            var json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "json", "fluctuation.json"));
+
+            var model = JsonSerializer.Deserialize<FluctuationModel>(json, Constants.JsonSerializerOptions);
+
+            var result = Mappers.Fluctuation.Invoke(model);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Fluctuation);
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(result.BaseCurrencyCode));
+            Assert.IsTrue(result.StartDate > DateOnly.MinValue);
+            Assert.IsTrue(result.EndDate > DateOnly.MinValue);
+            Assert.IsNotNull(result.Rates);
+            Assert.IsTrue(result.Rates.Count > 0);
+            Assert.IsTrue(result.Rates.All(rate => !string.IsNullOrWhiteSpace(rate.CurrencyCode)));
+            Assert.IsTrue(result.Rates.GroupBy(rate => rate.CurrencyCode).All(x => x.Count() == 1));
+            Assert.IsTrue(result.Rates.All(rate => rate.StartRate != 0));
+            Assert.IsTrue(result.Rates.All(rate => rate.EndRate != 0));
+            Assert.IsTrue(result.Rates.All(rate => rate.Change != 0));
+            Assert.IsTrue(result.Rates.All(rate => rate.ChangePercentage != 0));
+        }
     }
 }

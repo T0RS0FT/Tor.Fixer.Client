@@ -1,0 +1,90 @@
+﻿@page "/fluctuation"
+
+<h1>Time-Series</h1>
+
+<div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm">Start Date</span>
+    </div>
+    <input type="date"
+           class="form-control"
+           aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           @bind="startDate">
+</div>
+
+<div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm">End Date</span>
+    </div>
+    <input type="date"
+           class="form-control"
+           aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           @bind="endDate">
+</div>
+
+<div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm">Base currency code</span>
+    </div>
+    <input type="text"
+           class="form-control"
+           aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           @bind="baseCurrencyCode"
+           placeholder="e.g., USD">
+</div>
+
+<div class="input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm">Destination currency codes</span>
+    </div>
+    <input type="text"
+           class="form-control"
+           aria-label="Small"
+           aria-describedby="inputGroup-sizing-sm"
+           @bind="destinationCurrencyCodes"
+           placeholder="e.g., EUR,GBP,USD">
+</div>
+
+<button type="button" class="btn btn-primary" @onclick="LoadData">Load</button>
+
+@if (hasData)
+{
+    <ul>
+        <li>Start Date: @fluctuation.StartDate</li>
+        <li>End Date: @fluctuation.EndDate</li>
+        <li>Base Currency Code: @fluctuation.BaseCurrencyCode</li>
+        <li>Fluctuation: @fluctuation.Fluctuation</li>
+    </ul>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Currency code</th>
+                <th>Start rate</th>
+                <th>End rate</th>
+                <th>Change</th>
+                <th>Change percentage</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rate in fluctuation.Rates)
+            {
+                <tr>
+                    <td>@rate.CurrencyCode</td>
+                    <td>@rate.StartRate</td>
+                    <td>@rate.EndRate</td>
+                    <td>@rate.Change</td>
+                    <td>@rate.ChangePercentage</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (hasError)
+{
+    <div class="alert alert-danger" role="alert">@error</div>
+}

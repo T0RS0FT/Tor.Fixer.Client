@@ -141,6 +141,43 @@ namespace Tor.Fixer.Client
                 Mappers.TimeSeries);
         }
 
+        public async Task<FixerResponse<FluctuationResult>> GetFluctuationAsync(DateOnly startDate, DateOnly endDate)
+            => await GetFluctuationAsync(startDate, endDate, null, null);
+
+        public async Task<FixerResponse<FluctuationResult>> GetFluctuationAsync(DateOnly startDate, DateOnly endDate, string baseCurrencyCode)
+            => await GetFluctuationAsync(startDate, endDate, baseCurrencyCode, null);
+
+        public async Task<FixerResponse<FluctuationResult>> GetFluctuationAsync(DateOnly startDate, DateOnly endDate, string[] destinationCurrencyCodes)
+            => await GetFluctuationAsync(startDate, endDate, null, destinationCurrencyCodes);
+
+        public async Task<FixerResponse<FluctuationResult>> GetFluctuationAsync(DateOnly startDate, DateOnly endDate, string baseCurrencyCode, string[] destinationCurrencyCodes)
+        {
+            var queryParameters = new Dictionary<string, string>
+            {
+                { Constants.Endpoints.Fluctuation.Parameters.StartDate, startDate.ToString("O") },
+                { Constants.Endpoints.Fluctuation.Parameters.EndDate, endDate.ToString("O") },
+            };
+
+            if (!string.IsNullOrWhiteSpace(baseCurrencyCode))
+            {
+                queryParameters.Add(
+                    Constants.Endpoints.Fluctuation.Parameters.BaseCurrencyCode,
+                    baseCurrencyCode);
+            }
+
+            if (destinationCurrencyCodes != null && destinationCurrencyCodes.Length > 0)
+            {
+                queryParameters.Add(
+                    Constants.Endpoints.Fluctuation.Parameters.Symbols,
+                    string.Join(",", destinationCurrencyCodes));
+            }
+
+            return await GetFixerResponseAsync(
+                Constants.Endpoints.Fluctuation.UrlSegment,
+                queryParameters,
+                Mappers.Fluctuation);
+        }
+
         private async Task<FixerResponse<TResponseModel>> GetFixerResponseAsync<TFixerModel, TResponseModel>(
             string url,
             Dictionary<string, string> queryParameters,

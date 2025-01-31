@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Remove="Json\convert.json" />
     <None Remove="Json\error.json" />
+    <None Remove="Json\fluctuation.json" />
     <None Remove="Json\historical.json" />
     <None Remove="Json\latest.json" />
     <None Remove="Json\symbols.json" />
@@ -19,6 +20,9 @@
 
   <ItemGroup>
     <Content Include="Json\error.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Json\fluctuation.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Json\historical.json">

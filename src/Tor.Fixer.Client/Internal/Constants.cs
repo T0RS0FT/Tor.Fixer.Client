@@ -65,6 +65,19 @@ namespace Tor.Fixer.Client.Internal
                     internal const string Symbols = "symbols";
                 }
             }
+
+            internal class Fluctuation
+            {
+                internal const string UrlSegment = "fluctuation";
+
+                internal class Parameters
+                {
+                    internal const string StartDate = "start_date";
+                    internal const string EndDate = "end_date";
+                    internal const string BaseCurrencyCode = "base";
+                    internal const string Symbols = "symbols";
+                }
+            }
         }
     }
 }
