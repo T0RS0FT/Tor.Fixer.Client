@@ -61,7 +61,7 @@ builder.Services.AddFixer(options =>
 });
 ```
 
-Based on your design, you can choose a http error handling mode with the following:
+Based on your design, you can choose a http error handling mode with the following code:
 
 ```text
 builder.Services.AddFixer(options =>
