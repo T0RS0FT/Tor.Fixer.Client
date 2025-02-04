@@ -9,6 +9,13 @@ namespace Tor.Fixer.Client
 {
     public class FixerClient(HttpClient httpClient, IOptions<FixerOptions> options) : IFixerClient
     {
+        public async Task<bool> HealthCheckAsync()
+        {
+            var httpResponse = await httpClient.GetAsync(string.Empty);
+
+            return httpResponse.IsSuccessStatusCode;
+        }
+
         public async Task<FixerResponse<List<SymbolResult>>> GetSymbolsAsync()
             => await GetFixerResponseAsync(Constants.Endpoints.Symbols.UrlSegment, [], Mappers.Symbols);
 

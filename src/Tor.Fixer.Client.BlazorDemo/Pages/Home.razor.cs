@@ -1,8 +1,15 @@
-﻿namespace Tor.Fixer.Client.BlazorDemo.Pages
+﻿using Microsoft.AspNetCore.Components;
+
+namespace Tor.Fixer.Client.BlazorDemo.Pages
 {
     public partial class Home
     {
-        private string apiKey
+        [Inject]
+        private IFixerClient FixerClient { get; set; }
+
+        private string logs = string.Empty;
+
+        private static string ApiKey
         {
             get
             {
@@ -12,6 +19,15 @@
             {
                 Constants.FixerApiKey = value;
             }
+        }
+
+        private async Task HealthCheck()
+        {
+            var result = await FixerClient.HealthCheckAsync();
+
+            logs += result
+                ? $"Service is available{Environment.NewLine}"
+                : $"Service is not available{Environment.NewLine}";
         }
     }
 }

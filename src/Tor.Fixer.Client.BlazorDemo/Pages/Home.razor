@@ -12,6 +12,12 @@
            class="form-control" 
            aria-label="Small" 
            aria-describedby="inputGroup-sizing-sm" 
-           @bind="apiKey" 
+           @bind="ApiKey" 
            placeholder="Please enter a valid Fixer API Key">
 </div>
+
+<button type="button" class="btn btn-primary" @onclick="HealthCheck">HealthCheck</button>
+
+<pre>
+    @logs
+</pre>

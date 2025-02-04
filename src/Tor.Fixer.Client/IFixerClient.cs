@@ -4,6 +4,8 @@ namespace Tor.Fixer.Client
 {
     public interface IFixerClient
     {
+        Task<bool> HealthCheckAsync();
+
         Task<FixerResponse<List<SymbolResult>>> GetSymbolsAsync();
 
         Task<FixerResponse<LatestRatesResult>> GetLatestRatesAsync();
