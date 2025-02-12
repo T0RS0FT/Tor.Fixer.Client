@@ -19,7 +19,7 @@ You have to register the **FixerClient** with the dependencies in the Program.cs
 For the minimal registration, you have to add your Fixer.io API key to the options builder:
 
 ```text
-builder.Services.AddFixer(options =>
+services.AddFixer(options =>
 {
     options.WithApiKey("Your API key");
 });
@@ -30,7 +30,7 @@ builder.Services.AddFixer(options =>
 Setting the API key:
 
 ```text
-builder.Services.AddFixer(options =>
+services.AddFixer(options =>
 {
     options.WithApiKey("Your Fixer.io API key");
 });
@@ -46,7 +46,7 @@ public static class SharedData
 ```
 
 ```text
-builder.Services.AddFixer(options =>
+services.AddFixer(options =>
 {
     options.WithApiKeyFactory(() => SharedData.FixerApiKey);
 });
@@ -55,7 +55,7 @@ builder.Services.AddFixer(options =>
 If you use an alias accessing Fixer.io or the Fixer.io base address changes and this package is not updated yet, you can override the base address:
 
 ```text
-builder.Services.AddFixer(options =>
+services.AddFixer(options =>
 {
     options.WithBaseUrl("Your URL");
 });
@@ -64,7 +64,7 @@ builder.Services.AddFixer(options =>
 Based on your design, you can choose a http error handling mode with the following code:
 
 ```text
-builder.Services.AddFixer(options =>
+services.AddFixer(options =>
 {
     options.WithHttpErrorHandling(HttpErrorHandlingMode.ReturnsError);
 });
