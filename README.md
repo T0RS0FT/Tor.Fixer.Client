@@ -1,4 +1,4 @@
-# Tor.Currency.Fixer.Io.Client
+# Tor.Fixer.Client
 
 [![](https://img.shields.io/nuget/dt/Tor.Fixer.Client)](#) [![](https://img.shields.io/nuget/v/Tor.Fixer.Client)](https://www.nuget.org/packages/Tor.Fixer.Client)
 
