@@ -130,7 +130,7 @@ Response:
 
 #### IFixerClient.GetLatestRatesAsync method
 
-Method parameters
+Method parameters:
 
 | Parameter                 | Description                                              | Optional / Required |
 | --------------------------|----------------------------------------------------------|---------------------|
@@ -150,7 +150,7 @@ Response:
 
 #### IFixerClient.GetHistoricalRatesAsync method
 
-Method parameters
+Method parameters:
 
 | Parameter                 | Description                                                 | Optional / Required |
 | --------------------------|-------------------------------------------------------------|---------------------|
@@ -172,7 +172,7 @@ Response:
 
 #### IFixerClient.ConvertAsync method
 
-Method parameters
+Method parameters:
 
 | Parameter                 | Description                                                 | Optional / Required |
 | --------------------------|-------------------------------------------------------------|---------------------|
@@ -198,8 +198,50 @@ Response:
 
 #### IFixerClient.GetTimeSeriesAsync method
 
-// TODO
+Method parameters:
+
+| Parameter                 | Description                                                 | Optional / Required |
+| --------------------------|-------------------------------------------------------------|---------------------|
+| startDate                 | Start date                                                  | Required            |
+| endDate                   | End date                                                    | Required            |
+| baseCurrencyCode          | Three letter base currency code                             | Optional            |
+| destinationCurrencyCodes  | The codes of the expected result destination currencies     | Optional            |
+
+Response:
+
+| Property                           | Description                             |
+| ---------------------------------- | ----------------------------------------|
+| TimeSeries                         | **true** / **false**                    |
+| StartDate                          | The start date                          |
+| EndDate                            | The end date                            |
+| BaseCurrencyCode                   | Three letter base currency code         |
+| Items                              | Exchange rate list                      |
+| Items -> Date                      | Date of the exchanges                   |
+| Items -> Rates -> CurrencyCode     | Three letter currency code              |
+| Items -> Rates -> ExchangeRate     | Exchange rate                           |
 
 #### IFixerClient.GetFluctuationAsync method
 
-// TODO
+Method parameters:
+
+| Parameter                 | Description                                                 | Optional / Required |
+| --------------------------|-------------------------------------------------------------|---------------------|
+| startDate                 | Start date                                                  | Required            |
+| endDate                   | End date                                                    | Required            |
+| baseCurrencyCode          | Three letter base currency code                             | Optional            |
+| destinationCurrencyCodes  | The codes of the expected result destination currencies     | Optional            |
+
+Response:
+
+| Property                           | Description                                                                       |
+| ---------------------------------- | ----------------------------------------------------------------------------------|
+| Fluctuation                        | **true** / **false**                                                              |
+| StartDate                          | The start date                                                                    |
+| EndDate                            | The end date                                                                      |
+| BaseCurrencyCode                   | Three letter base currency code                                                   |
+| Rates                              | Exchange fluctuation list                                                         |
+| Rates -> CurrencyCode              | Three letter currency code                                                        |
+| Rates -> StartRate                 | Start date                                                                        |
+| Rates -> EndRate                   | End date                                                                          |
+| Rates -> Change                    | The change of the given currency rate between your start and end date             |
+| Rates -> ChangePercentage          | The percentage change of the given currency rate between your start and end date  |
