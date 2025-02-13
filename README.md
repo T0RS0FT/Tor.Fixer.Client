@@ -137,13 +137,64 @@ Method parameters
 | baseCurrencyCode          | Three letter base currency code                          | Optional            |
 | destinationCurrencyCodes  | The codes of the expected result destination currencies  | Optional            |
 
+Response:
+
+| Property               | Description                     |
+| ---------------------- | --------------------------------|
+| BaseCurrencyCode       | Three letter base currency code |
+| Date                   | The date of the data            |
+| Timestamp              | The UNIX timestamp of the data  |
+| Rates                  | List of the exchange rates      |
+| Rates -> CurrencyCode  | Three letter currency code      |
+| Rates -> ExchangeRate  | Exchange rate                   |
+
 #### IFixerClient.GetHistoricalRatesAsync method
 
-// TODO
+Method parameters
+
+| Parameter                 | Description                                                 | Optional / Required |
+| --------------------------|-------------------------------------------------------------|---------------------|
+| date                      | A date in the past for which historical rates are requested | Required            |
+| baseCurrencyCode          | Three letter base currency code                             | Optional            |
+| destinationCurrencyCodes  | The codes of the expected result destination currencies     | Optional            |
+
+Response:
+
+| Property               | Description                     |
+| ---------------------- | --------------------------------|
+| Historical             | **true** / **false**            |
+| BaseCurrencyCode       | Three letter base currency code |
+| Date                   | The date of the data            |
+| Timestamp              | The UNIX timestamp of the data  |
+| Rates                  | List of the exchange rates      |
+| Rates -> CurrencyCode  | Three letter currency code      |
+| Rates -> ExchangeRate  | Exchange rate                   |
 
 #### IFixerClient.ConvertAsync method
 
-// TODO
+Method parameters
+
+| Parameter                 | Description                                                 | Optional / Required |
+| --------------------------|-------------------------------------------------------------|---------------------|
+| sourceCurrencyCode        | Three letter source currency code                           | Required            |
+| destinationCurrencyCode   | Three letter destination currency code                      | Required            |
+| amount                    | Amount to exchange                                          | Required            |
+| date                      | A date in the past for which exchange is requested          | Optional            |
+
+Response:
+
+| Property                           | Description                             |
+| ---------------------------------- | ----------------------------------------|
+| Historical                         | **true** / **false**                    |
+| Date                               | The date of the data                    |
+| Result                             | The converted amount                    |
+| Query                              | Request query info                      |
+| Query -> SourceCurrencyCode        | Three letter source currency code       |
+| Query -> DestinationCurrencyCode   | Three letter destination currency code  |
+| Query -> Amount                    | Amount to exchange                      |
+| Info                               | Exchange info                           |
+| Info -> Timestamp                  | The UNIX timestamp of the exchange rate |
+| Info -> Rate                       | Exchange rate                           |
 
 #### IFixerClient.GetTimeSeriesAsync method
 
