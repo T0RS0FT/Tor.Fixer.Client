@@ -89,13 +89,53 @@ public class MyService
 }
 ```
 
+> **_NOTE:_**  Please note that depending on your subscription plan, certain API endpoints may or may not be available.
+
+#### Response object
+
+Every method call will return with the following **FixerResponse<TResult>** class:
+
+```text
+public class FixerResponse<TResult>
+{
+    public bool Success { get; set; }
+
+    public TResult Result { get; set; }
+
+    public FixerError Error { get; set; }
+}
+```
+
+ - When the request succeed
+   - Success: true
+   - Error: null
+   - Result: object
+ - When the request failed
+   - Success: false
+   - Error: object
+   - Result: null
+
+
 #### IFixerClient.GetSymbolsAsync method
 
-// TODO
+No method parameters.
+
+Response:
+
+| Property | Description                 |
+| -------- | ----------------------------|
+| Code     | Three letter currency code  |
+| Name     | The name of the currency    |
+
 
 #### IFixerClient.GetLatestRatesAsync method
 
-// TODO
+Method parameters
+
+| Parameter                 | Description                                              | Optional / Required |
+| --------------------------|----------------------------------------------------------|---------------------|
+| baseCurrencyCode          | Three letter base currency code                          | Optional            |
+| destinationCurrencyCodes  | The codes of the expected result destination currencies  | Optional            |
 
 #### IFixerClient.GetHistoricalRatesAsync method
 
