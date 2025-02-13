@@ -75,3 +75,40 @@ There are two options (default: ReturnsError):
  - ThrowsException: when http call ends with an errorcode, there will be an exception
 
 Of course, you can combine these options for your needs except **WithApiKey** and **WithApiKeyFactory**.
+
+### IFixerClient usage
+
+You can get the **IFixerClient** via dependency injection:
+
+```text
+public class MyService
+{
+    public MyService(IFixerClient client)
+    {
+    }   
+}
+```
+
+#### IFixerClient.GetSymbolsAsync method
+
+// TODO
+
+#### IFixerClient.GetLatestRatesAsync method
+
+// TODO
+
+#### IFixerClient.GetHistoricalRatesAsync method
+
+// TODO
+
+#### IFixerClient.ConvertAsync method
+
+// TODO
+
+#### IFixerClient.GetTimeSeriesAsync method
+
+// TODO
+
+#### IFixerClient.GetFluctuationAsync method
+
+// TODO
