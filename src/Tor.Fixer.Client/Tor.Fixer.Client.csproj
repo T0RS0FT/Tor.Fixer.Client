@@ -12,6 +12,7 @@
     <RepositoryUrl>https://github.com/T0RS0FT/Tor.Fixer.Client</RepositoryUrl>
     <PackageProjectUrl>https://github.com/T0RS0FT/Tor.Fixer.Client</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageTags>fixer fixer.io client api</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
