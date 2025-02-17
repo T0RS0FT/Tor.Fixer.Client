@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using Tor.Fixer.Client.Enums;
+using Tor.Fixer.Client.Extensions;
 using Tor.Fixer.Client.Internal;
 using Tor.Fixer.Client.Internal.Models;
 using Tor.Fixer.Client.Models;
@@ -9,6 +10,9 @@ namespace Tor.Fixer.Client
 {
     public class FixerClient(HttpClient httpClient, IOptions<FixerOptions> options) : IFixerClient
     {
+        private readonly HttpClient httpClient = httpClient;
+        private readonly FixerOptions options = options.Value;
+
         public async Task<bool> HealthCheckAsync()
         {
             var httpResponse = await httpClient.GetAsync(string.Empty);
@@ -43,7 +47,7 @@ namespace Tor.Fixer.Client
             {
                 queryParameters.Add(
                     Constants.Endpoints.LatestRates.Parameters.Symbols,
-                    string.Join(",", destinationCurrencyCodes));
+                    destinationCurrencyCodes.ToFixerCurrencyCodes());
             }
 
             return await GetFixerResponseAsync(
@@ -76,11 +80,11 @@ namespace Tor.Fixer.Client
             {
                 queryParameters.Add(
                     Constants.Endpoints.HistoricalRates.Parameters.Symbols,
-                    string.Join(",", destinationCurrencyCodes));
+                    destinationCurrencyCodes.ToFixerCurrencyCodes());
             }
 
             return await GetFixerResponseAsync(
-                date.ToString("O"),
+                date.ToFixerFormat(),
                 queryParameters,
                 Mappers.HistoricalRates);
         }
@@ -102,7 +106,7 @@ namespace Tor.Fixer.Client
 
             if (date != null)
             {
-                queryParameters.Add(Constants.Endpoints.Convert.Parameters.Date, date.Value.ToString("O"));
+                queryParameters.Add(Constants.Endpoints.Convert.Parameters.Date, date.Value.ToFixerFormat());
             }
 
             return await GetFixerResponseAsync(
@@ -124,8 +128,8 @@ namespace Tor.Fixer.Client
         {
             var queryParameters = new Dictionary<string, string>
             {
-                { Constants.Endpoints.TimeSeries.Parameters.StartDate, startDate.ToString("O") },
-                { Constants.Endpoints.TimeSeries.Parameters.EndDate, endDate.ToString("O") },
+                { Constants.Endpoints.TimeSeries.Parameters.StartDate, startDate.ToFixerFormat() },
+                { Constants.Endpoints.TimeSeries.Parameters.EndDate, endDate.ToFixerFormat() },
             };
 
             if (!string.IsNullOrWhiteSpace(baseCurrencyCode))
@@ -139,7 +143,7 @@ namespace Tor.Fixer.Client
             {
                 queryParameters.Add(
                     Constants.Endpoints.TimeSeries.Parameters.Symbols,
-                    string.Join(",", destinationCurrencyCodes));
+                    destinationCurrencyCodes.ToFixerCurrencyCodes());
             }
 
             return await GetFixerResponseAsync(
@@ -161,8 +165,8 @@ namespace Tor.Fixer.Client
         {
             var queryParameters = new Dictionary<string, string>
             {
-                { Constants.Endpoints.Fluctuation.Parameters.StartDate, startDate.ToString("O") },
-                { Constants.Endpoints.Fluctuation.Parameters.EndDate, endDate.ToString("O") },
+                { Constants.Endpoints.Fluctuation.Parameters.StartDate, startDate.ToFixerFormat() },
+                { Constants.Endpoints.Fluctuation.Parameters.EndDate, endDate.ToFixerFormat() },
             };
 
             if (!string.IsNullOrWhiteSpace(baseCurrencyCode))
@@ -176,7 +180,7 @@ namespace Tor.Fixer.Client
             {
                 queryParameters.Add(
                     Constants.Endpoints.Fluctuation.Parameters.Symbols,
-                    string.Join(",", destinationCurrencyCodes));
+                    destinationCurrencyCodes.ToFixerCurrencyCodes());
             }
 
             return await GetFixerResponseAsync(
@@ -191,14 +195,14 @@ namespace Tor.Fixer.Client
             Func<TFixerModel, TResponseModel> mapper)
             where TFixerModel : FixerModelBase
         {
-            if (!string.IsNullOrWhiteSpace(options.Value.BaseUrl))
+            if (!string.IsNullOrWhiteSpace(options.BaseUrl))
             {
-                httpClient.BaseAddress = new Uri(options.Value.BaseUrl);
+                httpClient.BaseAddress = new Uri(options.BaseUrl);
             }
 
             var httpResponse = await httpClient.GetAsync(GetUrl(url, queryParameters));
 
-            switch (options.Value.HttpErrorHandlingMode)
+            switch (options.HttpErrorHandlingMode)
             {
                 case HttpErrorHandlingMode.ThrowsException:
                     httpResponse.EnsureSuccessStatusCode();
@@ -231,7 +235,7 @@ namespace Tor.Fixer.Client
 
         private string GetApiKey()
         {
-            var apiKey = options.Value.ApiKeyFactory?.Invoke() ?? options.Value.ApiKey;
+            var apiKey = options.ApiKeyFactory?.Invoke() ?? options.ApiKey;
 
             return !string.IsNullOrWhiteSpace(apiKey)
                 ? apiKey

@@ -79,5 +79,12 @@ namespace Tor.Fixer.Client.Internal
                 }
             }
         }
+
+        internal class Messages
+        {
+            internal const string CurrencyCodeNotFound = "Currency code not found";
+            internal const string SourceCurrencyCodeNotFound = "Source currency code not found";
+            internal const string DestinationCurrencyCodeNotFound = "Destination currency code not found";
+        }
     }
 }

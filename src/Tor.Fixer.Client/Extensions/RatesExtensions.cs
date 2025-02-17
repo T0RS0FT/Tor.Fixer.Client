@@ -1,4 +1,5 @@
 ﻿using Tor.Fixer.Client.Interfaces;
+using Tor.Fixer.Client.Internal;
 using Tor.Fixer.Client.Models;
 
 namespace Tor.Fixer.Client.Extensions
@@ -15,36 +16,36 @@ namespace Tor.Fixer.Client.Extensions
             ArgumentException.ThrowIfNullOrWhiteSpace(sourceCurrencyCode);
             ArgumentException.ThrowIfNullOrWhiteSpace(destinationCurrencyCode);
 
-            if (sourceCurrencyCode.Equals(destinationCurrencyCode, StringComparison.InvariantCultureIgnoreCase))
+            if (sourceCurrencyCode.IgnoreCaseEquals(destinationCurrencyCode))
             {
                 return quantity;
             }
 
-            if (sourceCurrencyCode.Equals(rates.BaseCurrencyCode, StringComparison.InvariantCultureIgnoreCase))
+            if (sourceCurrencyCode.IgnoreCaseEquals(rates.BaseCurrencyCode))
             {
-                var rate = rates.Rates.SingleOrDefault(x => x.CurrencyCode.Equals(destinationCurrencyCode, StringComparison.InvariantCultureIgnoreCase));
+                var rate = rates.Rates.SingleOrDefault(x => x.CurrencyCode.IgnoreCaseEquals(destinationCurrencyCode));
 
                 return rate != null
                     ? rate.ExchangeRate * quantity
-                    : throw new Exception("Destination currency code not found");
+                    : throw new Exception(Constants.Messages.DestinationCurrencyCodeNotFound);
             }
 
-            if (destinationCurrencyCode.Equals(rates.BaseCurrencyCode, StringComparison.InvariantCultureIgnoreCase))
+            if (destinationCurrencyCode.IgnoreCaseEquals(rates.BaseCurrencyCode))
             {
-                var rate = rates.Rates.SingleOrDefault(x => x.CurrencyCode.Equals(sourceCurrencyCode, StringComparison.InvariantCultureIgnoreCase));
+                var rate = rates.Rates.SingleOrDefault(x => x.CurrencyCode.IgnoreCaseEquals(sourceCurrencyCode));
 
                 return rate != null
                     ? 1 / rate.ExchangeRate * quantity
-                    : throw new Exception("Source currency code not found");
+                    : throw new Exception(Constants.Messages.SourceCurrencyCodeNotFound);
             }
 
-            var sourceRate = rates.Rates.SingleOrDefault(x => x.CurrencyCode.Equals(sourceCurrencyCode, StringComparison.InvariantCultureIgnoreCase));
-            var destinationRate = rates.Rates.SingleOrDefault(x => x.CurrencyCode.Equals(destinationCurrencyCode, StringComparison.InvariantCultureIgnoreCase));
+            var sourceRate = rates.Rates.SingleOrDefault(x => x.CurrencyCode.IgnoreCaseEquals(sourceCurrencyCode));
+            var destinationRate = rates.Rates.SingleOrDefault(x => x.CurrencyCode.IgnoreCaseEquals(destinationCurrencyCode));
 
             return sourceRate == null
-                ? throw new Exception("Source currency code not found")
+                ? throw new Exception(Constants.Messages.SourceCurrencyCodeNotFound)
                 : destinationRate == null
-                    ? throw new Exception("Destination currency code not found")
+                    ? throw new Exception(Constants.Messages.DestinationCurrencyCodeNotFound)
                     : destinationRate.ExchangeRate / sourceRate.ExchangeRate * quantity;
         }
 
@@ -79,7 +80,7 @@ namespace Tor.Fixer.Client.Extensions
 
         private static List<CurrencyRateResult> RecalculateRates(IRatesResult rates, string baseCurrencyCode)
         {
-            if (rates.BaseCurrencyCode.Equals(baseCurrencyCode, StringComparison.InvariantCultureIgnoreCase))
+            if (rates.BaseCurrencyCode.IgnoreCaseEquals(baseCurrencyCode))
             {
                 return rates.Rates.Select(x => new CurrencyRateResult()
                 {
@@ -88,11 +89,11 @@ namespace Tor.Fixer.Client.Extensions
                 }).ToList();
             }
 
-            var baseRate = rates.Rates.SingleOrDefault(x => x.CurrencyCode.Equals(baseCurrencyCode, StringComparison.InvariantCultureIgnoreCase))
-                ?? throw new Exception("Currency code not found");
+            var baseRate = rates.Rates.SingleOrDefault(x => x.CurrencyCode.IgnoreCaseEquals(baseCurrencyCode))
+                ?? throw new Exception(Constants.Messages.CurrencyCodeNotFound);
 
             return [.. rates.Rates
-                .Select(x => x.CurrencyCode.Equals(baseCurrencyCode, StringComparison.InvariantCultureIgnoreCase)
+                .Select(x => x.CurrencyCode.IgnoreCaseEquals(baseCurrencyCode)
                     ? new CurrencyRateResult()
                     {
                         CurrencyCode = rates.BaseCurrencyCode,
