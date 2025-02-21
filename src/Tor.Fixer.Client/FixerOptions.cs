@@ -4,7 +4,7 @@ namespace Tor.Fixer.Client
 {
     public class FixerOptions
     {
-        public string BaseUrl { get; set; }
+        public string BaseUrl { get; private set; }
 
         public string ApiKey { get; private set; }
 
