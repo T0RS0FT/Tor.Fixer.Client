@@ -229,7 +229,7 @@ namespace Tor.Fixer.Client
             {
                 Success = content.Success,
                 Error = content.Error?.ToFixerError(),
-                Result = content.Success ? mapper.Invoke(content) : default
+                Result = content.Success ? mapper(content) : default
             };
         }
 

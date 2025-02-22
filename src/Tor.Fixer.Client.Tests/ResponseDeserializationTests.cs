@@ -14,7 +14,7 @@ namespace Tor.Fixer.Client.Tests
 
             var model = JsonSerializer.Deserialize<SymbolsModel>(json, Constants.JsonSerializerOptions);
 
-            var result = Mappers.Symbols.Invoke(model);
+            var result = Mappers.Symbols(model);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count > 0);
@@ -30,7 +30,7 @@ namespace Tor.Fixer.Client.Tests
 
             var model = JsonSerializer.Deserialize<LatestRatesModel>(json, Constants.JsonSerializerOptions);
 
-            var result = Mappers.LatestRates.Invoke(model);
+            var result = Mappers.LatestRates(model);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(!string.IsNullOrWhiteSpace(result.BaseCurrencyCode));
@@ -49,7 +49,7 @@ namespace Tor.Fixer.Client.Tests
 
             var model = JsonSerializer.Deserialize<HistoricalRatesModel>(json, Constants.JsonSerializerOptions);
 
-            var result = Mappers.HistoricalRates.Invoke(model);
+            var result = Mappers.HistoricalRates(model);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(!string.IsNullOrWhiteSpace(result.BaseCurrencyCode));
@@ -86,7 +86,7 @@ namespace Tor.Fixer.Client.Tests
 
             var model = JsonSerializer.Deserialize<ConvertModel>(json, Constants.JsonSerializerOptions);
 
-            var result = Mappers.Convert.Invoke(model);
+            var result = Mappers.Convert(model);
 
             Assert.IsNotNull(result);
             Assert.IsFalse(result.Historical);
@@ -108,7 +108,7 @@ namespace Tor.Fixer.Client.Tests
 
             var model = JsonSerializer.Deserialize<TimeSeriesModel>(json, Constants.JsonSerializerOptions);
 
-            var result = Mappers.TimeSeries.Invoke(model);
+            var result = Mappers.TimeSeries(model);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.TimeSeries);
@@ -135,7 +135,7 @@ namespace Tor.Fixer.Client.Tests
 
             var model = JsonSerializer.Deserialize<FluctuationModel>(json, Constants.JsonSerializerOptions);
 
-            var result = Mappers.Fluctuation.Invoke(model);
+            var result = Mappers.Fluctuation(model);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Fluctuation);
