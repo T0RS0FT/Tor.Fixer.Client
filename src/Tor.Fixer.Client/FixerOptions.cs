@@ -10,7 +10,9 @@ namespace Tor.Fixer.Client
 
         public Func<string> ApiKeyFactory { get; private set; }
 
-        public HttpErrorHandlingMode HttpErrorHandlingMode { get; private set; } = HttpErrorHandlingMode.ReturnsError;
+        public ErrorHandlingMode HttpErrorHandlingMode { get; private set; } = ErrorHandlingMode.ReturnsError;
+
+        public ErrorHandlingMode OtherErrorHandlingMode { get; private set; } = ErrorHandlingMode.ReturnsError;
 
         public FixerOptions WithBaseUrl(string baseUrl)
         {
@@ -43,9 +45,16 @@ namespace Tor.Fixer.Client
             return this;
         }
 
-        public FixerOptions WithHttpErrorHandling(HttpErrorHandlingMode httpErrorHandlingMode)
+        public FixerOptions WithHttpErrorHandling(ErrorHandlingMode httpErrorHandlingMode)
         {
             HttpErrorHandlingMode = httpErrorHandlingMode;
+
+            return this;
+        }
+
+        public FixerOptions WithOtherErrorHandling(ErrorHandlingMode otherErrorHandlingMode)
+        {
+            OtherErrorHandlingMode = otherErrorHandlingMode;
 
             return this;
         }

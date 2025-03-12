@@ -85,6 +85,9 @@ namespace Tor.Fixer.Client.Internal
             internal const string CurrencyCodeNotFound = "Currency code not found";
             internal const string SourceCurrencyCodeNotFound = "Source currency code not found";
             internal const string DestinationCurrencyCodeNotFound = "Destination currency code not found";
+            internal const string NotFoundType = "Not found";
+            internal const string HttpErrorInfo = "An error occurred during the http request";
+            internal const string HttpErrorType = "Http error";
         }
     }
 }

@@ -94,8 +94,32 @@ namespace Tor.Fixer.Client
 
         public async Task<FixerResponse<ConvertResult>> ConvertAsync(string sourceCurrencyCode, string destinationCurrencyCode, decimal amount, DateOnly? date)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(sourceCurrencyCode);
-            ArgumentException.ThrowIfNullOrWhiteSpace(destinationCurrencyCode);
+            switch (options.OtherErrorHandlingMode)
+            {
+                case ErrorHandlingMode.ReturnsError:
+                    if (string.IsNullOrWhiteSpace(sourceCurrencyCode) || string.IsNullOrWhiteSpace(destinationCurrencyCode))
+                    {
+                        return new FixerResponse<ConvertResult>()
+                        {
+                            Result = default,
+                            Success = false,
+                            Error = new FixerError()
+                            {
+                                ErrorType = ErrorType.Other,
+                                Info = string.IsNullOrWhiteSpace(sourceCurrencyCode)
+                                    ? Constants.Messages.SourceCurrencyCodeNotFound
+                                    : Constants.Messages.DestinationCurrencyCodeNotFound,
+                                Type = Constants.Messages.NotFoundType,
+                                Code = 1
+                            }
+                        };
+                    }
+                    break;
+                case ErrorHandlingMode.ThrowsException:
+                    ArgumentException.ThrowIfNullOrWhiteSpace(sourceCurrencyCode);
+                    ArgumentException.ThrowIfNullOrWhiteSpace(destinationCurrencyCode);
+                    break;
+            }
 
             var queryParameters = new Dictionary<string, string>
             {
@@ -204,10 +228,10 @@ namespace Tor.Fixer.Client
 
             switch (options.HttpErrorHandlingMode)
             {
-                case HttpErrorHandlingMode.ThrowsException:
+                case ErrorHandlingMode.ThrowsException:
                     httpResponse.EnsureSuccessStatusCode();
                     break;
-                case HttpErrorHandlingMode.ReturnsError:
+                case ErrorHandlingMode.ReturnsError:
                     if (!httpResponse.IsSuccessStatusCode)
                     {
                         return new FixerResponse<TResponseModel>()
@@ -216,7 +240,9 @@ namespace Tor.Fixer.Client
                             Error = new FixerError()
                             {
                                 ErrorType = ErrorType.Http,
-                                Code = (int)httpResponse.StatusCode
+                                Code = (int)httpResponse.StatusCode,
+                                Info = Constants.Messages.HttpErrorInfo,
+                                Type = Constants.Messages.HttpErrorType
                             }
                         };
                     }

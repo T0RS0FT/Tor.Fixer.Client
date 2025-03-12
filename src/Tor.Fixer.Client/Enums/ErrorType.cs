@@ -3,6 +3,7 @@
     public enum ErrorType
     {
         Http = 0,
-        Fixer = 1
+        Fixer = 1,
+        Other = 2
     }
 }
