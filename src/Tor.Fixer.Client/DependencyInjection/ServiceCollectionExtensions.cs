@@ -3,7 +3,7 @@ using Tor.Fixer.Client.Internal;
 
 namespace Tor.Fixer.Client.DependencyInjection
 {
-    public static class FixerServiceCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
         public static void AddFixer(this IServiceCollection services, Action<FixerOptions> fixerOptions)
         {
