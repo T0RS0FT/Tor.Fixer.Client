@@ -5,7 +5,7 @@ namespace Tor.Fixer.Client.Internal.Models
     internal class LatestRatesModel : FixerModelBase
     {
         [JsonInclude]
-        internal int Timestamp { get; set; }
+        internal long Timestamp { get; set; }
 
         [JsonInclude]
         internal string Base { get; set; }

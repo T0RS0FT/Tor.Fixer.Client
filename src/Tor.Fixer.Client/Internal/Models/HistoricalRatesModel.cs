@@ -10,7 +10,7 @@ namespace Tor.Fixer.Client.Internal.Models
         internal bool Historical { get; set; }
 
         [JsonInclude]
-        internal int Timestamp { get; set; }
+        internal long Timestamp { get; set; }
 
         [JsonInclude]
         internal string Base { get; set; }

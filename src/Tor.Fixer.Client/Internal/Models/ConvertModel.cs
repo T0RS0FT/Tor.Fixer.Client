@@ -37,7 +37,7 @@ namespace Tor.Fixer.Client.Internal.Models
     internal class ConvertInfoModel
     {
         [JsonInclude]
-        public int Timestamp { get; set; }
+        public long Timestamp { get; set; }
 
         [JsonInclude]
         public decimal Rate { get; set; }

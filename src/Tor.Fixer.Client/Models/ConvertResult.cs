@@ -24,7 +24,7 @@
 
     public class ConvertInfoResult
     {
-        public int Timestamp { get; set; }
+        public long Timestamp { get; set; }
 
         public decimal Rate { get; set; }
     }
