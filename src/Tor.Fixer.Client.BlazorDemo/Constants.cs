@@ -2,6 +2,6 @@
 {
     public static class Constants
     {
-        public static string FixerApiKey { get; set; } = "";
+        public static string ApiKey { get; set; } = "";
     }
 }

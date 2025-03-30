@@ -21,7 +21,7 @@ namespace Tor.Fixer.Client.BlazorDemo.Pages
 
         private async Task LoadData()
         {
-            if (string.IsNullOrWhiteSpace(Constants.FixerApiKey))
+            if (string.IsNullOrWhiteSpace(Constants.ApiKey))
             {
                 fluctuation = null;
                 hasData = false;

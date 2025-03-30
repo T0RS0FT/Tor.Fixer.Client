@@ -16,7 +16,7 @@ namespace Tor.Fixer.Client.BlazorDemo
 
             builder.Services.AddFixer(options =>
             {
-                options.WithApiKeyFactory(() => Constants.FixerApiKey);
+                options.WithApiKeyFactory(() => Constants.ApiKey);
             });
 
             await builder.Build().RunAsync();

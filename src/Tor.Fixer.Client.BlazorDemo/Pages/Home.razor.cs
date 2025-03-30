@@ -13,11 +13,11 @@ namespace Tor.Fixer.Client.BlazorDemo.Pages
         {
             get
             {
-                return Constants.FixerApiKey;
+                return Constants.ApiKey;
             }
             set
             {
-                Constants.FixerApiKey = value;
+                Constants.ApiKey = value;
             }
         }
 
