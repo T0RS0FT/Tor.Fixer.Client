@@ -21,7 +21,7 @@ namespace Tor.Fixer.Client
         }
 
         public async Task<FixerResponse<List<SymbolResult>>> GetSymbolsAsync()
-            => await GetFixerResponseAsync(Constants.Endpoints.Symbols.UrlSegment, [], Mappers.Symbols);
+            => await GetResponseAsync(Constants.Endpoints.Symbols.UrlSegment, [], Mappers.Symbols);
 
         public async Task<FixerResponse<LatestRatesResult>> GetLatestRatesAsync()
             => await GetLatestRatesAsync(null, null);
@@ -50,7 +50,7 @@ namespace Tor.Fixer.Client
                     destinationCurrencyCodes.ToFixerCurrencyCodes());
             }
 
-            return await GetFixerResponseAsync(
+            return await GetResponseAsync(
                 Constants.Endpoints.LatestRates.UrlSegment,
                 queryParameters,
                 Mappers.LatestRates);
@@ -83,7 +83,7 @@ namespace Tor.Fixer.Client
                     destinationCurrencyCodes.ToFixerCurrencyCodes());
             }
 
-            return await GetFixerResponseAsync(
+            return await GetResponseAsync(
                 date.ToFixerFormat(),
                 queryParameters,
                 Mappers.HistoricalRates);
@@ -133,7 +133,7 @@ namespace Tor.Fixer.Client
                 queryParameters.Add(Constants.Endpoints.Convert.Parameters.Date, date.Value.ToFixerFormat());
             }
 
-            return await GetFixerResponseAsync(
+            return await GetResponseAsync(
                 Constants.Endpoints.Convert.UrlSegment,
                 queryParameters,
                 Mappers.Convert);
@@ -170,7 +170,7 @@ namespace Tor.Fixer.Client
                     destinationCurrencyCodes.ToFixerCurrencyCodes());
             }
 
-            return await GetFixerResponseAsync(
+            return await GetResponseAsync(
                 Constants.Endpoints.TimeSeries.UrlSegment,
                 queryParameters,
                 Mappers.TimeSeries);
@@ -207,13 +207,13 @@ namespace Tor.Fixer.Client
                     destinationCurrencyCodes.ToFixerCurrencyCodes());
             }
 
-            return await GetFixerResponseAsync(
+            return await GetResponseAsync(
                 Constants.Endpoints.Fluctuation.UrlSegment,
                 queryParameters,
                 Mappers.Fluctuation);
         }
 
-        private async Task<FixerResponse<TResponseModel>> GetFixerResponseAsync<TFixerModel, TResponseModel>(
+        private async Task<FixerResponse<TResponseModel>> GetResponseAsync<TFixerModel, TResponseModel>(
             string url,
             Dictionary<string, string> queryParameters,
             Func<TFixerModel, TResponseModel> mapper)
