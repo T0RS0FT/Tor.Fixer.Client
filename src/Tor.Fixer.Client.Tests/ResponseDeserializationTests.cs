@@ -8,6 +8,23 @@ namespace Tor.Fixer.Client.Tests
     public class ResponseDeserializationTests
     {
         [TestMethod]
+        public void ErrorDeserializeTest()
+        {
+            var json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "json", "error.json"));
+
+            var model = JsonSerializer.Deserialize<HistoricalRatesModel>(json, Constants.JsonSerializerOptions);
+
+            var error = model.Error?.ToFixerError();
+
+            Assert.IsNotNull(model);
+            Assert.IsFalse(model.Success);
+            Assert.IsNotNull(error);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(error.Info));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(error.Type));
+            Assert.IsTrue(error.Code > 0);
+        }
+
+        [TestMethod]
         public void SymbolsDeserializeTest()
         {
             var json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "json", "symbols.json"));
@@ -33,7 +50,7 @@ namespace Tor.Fixer.Client.Tests
             var result = Mappers.LatestRates(model);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(result.BaseCurrencyCode));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(result.BaseCurrencyCode));
             Assert.IsTrue(result.Timestamp > 0);
             Assert.IsNotNull(result.Rates);
             Assert.IsTrue(result.Rates.Count > 0);
@@ -52,7 +69,7 @@ namespace Tor.Fixer.Client.Tests
             var result = Mappers.HistoricalRates(model);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(result.BaseCurrencyCode));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(result.BaseCurrencyCode));
             Assert.IsTrue(result.Timestamp > 0);
             Assert.IsTrue(result.Historical);
             Assert.IsNotNull(result.Rates);
@@ -60,23 +77,6 @@ namespace Tor.Fixer.Client.Tests
             Assert.IsTrue(result.Rates.All(x => !string.IsNullOrWhiteSpace(x.CurrencyCode)));
             Assert.IsTrue(result.Rates.All(x => x.ExchangeRate > 0));
             Assert.IsTrue(result.Rates.GroupBy(x => x.CurrencyCode).All(x => x.Count() == 1));
-        }
-
-        [TestMethod]
-        public void ErrorDeserializeTest()
-        {
-            var json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "json", "error.json"));
-
-            var model = JsonSerializer.Deserialize<HistoricalRatesModel>(json, Constants.JsonSerializerOptions);
-
-            var error = model.Error?.ToFixerError();
-
-            Assert.IsNotNull(model);
-            Assert.IsFalse(model.Success);
-            Assert.IsNotNull(error);
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(error.Info));
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(error.Type));
-            Assert.IsTrue(error.Code > 0);
         }
 
         [TestMethod]
@@ -93,8 +93,8 @@ namespace Tor.Fixer.Client.Tests
             Assert.IsTrue(result.Result > 0);
             Assert.IsTrue(result.Date > DateOnly.MinValue);
             Assert.IsNotNull(result.Query);
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(result.Query.SourceCurrencyCode));
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(result.Query.DestinationCurrencyCode));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(result.Query.SourceCurrencyCode));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(result.Query.DestinationCurrencyCode));
             Assert.IsTrue(result.Query.Amount > 0);
             Assert.IsNotNull(result.Info);
             Assert.IsTrue(result.Info.Timestamp > 0);
@@ -112,7 +112,7 @@ namespace Tor.Fixer.Client.Tests
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.TimeSeries);
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(result.BaseCurrencyCode));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(result.BaseCurrencyCode));
             Assert.IsTrue(result.StartDate > DateOnly.MinValue);
             Assert.IsTrue(result.EndDate > DateOnly.MinValue);
             Assert.IsNotNull(result.Items);
@@ -139,7 +139,7 @@ namespace Tor.Fixer.Client.Tests
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Fluctuation);
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(result.BaseCurrencyCode));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(result.BaseCurrencyCode));
             Assert.IsTrue(result.StartDate > DateOnly.MinValue);
             Assert.IsTrue(result.EndDate > DateOnly.MinValue);
             Assert.IsNotNull(result.Rates);
