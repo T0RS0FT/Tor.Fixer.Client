@@ -11,7 +11,7 @@ namespace Tor.Fixer.Client.DependencyInjection
 
             services.AddHttpClient<IFixerClient, FixerClient>(options =>
             {
-                options.BaseAddress = new Uri(Constants.DefaultFixerUrl);
+                options.BaseAddress = new Uri(Constants.BaseUrl);
             });
 
             services.Configure(fixerOptions);
